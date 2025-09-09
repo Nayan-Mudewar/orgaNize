@@ -1,6 +1,5 @@
 package com.github.Nayan_Mudewar.orgaNize.dto;
 
-import com.github.Nayan_Mudewar.orgaNize.util.enums;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

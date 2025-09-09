@@ -1,8 +1,7 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
-import com.github.Nayan_Mudewar.orgaNize.util.enums;
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
+import static com.github.Nayan_Mudewar.orgaNize.util.enums.Role.USER;
 
 @Entity
 @Data
@@ -37,7 +37,7 @@ public class User {
     @Size(min = 6, max = 100)
     private String password;
 
-    private enums.Role role = enums.Role.USER;
+    private Role role = USER;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

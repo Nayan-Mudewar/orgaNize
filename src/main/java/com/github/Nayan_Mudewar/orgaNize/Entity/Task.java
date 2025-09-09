@@ -1,6 +1,5 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
-import com.github.Nayan_Mudewar.orgaNize.util.enums;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

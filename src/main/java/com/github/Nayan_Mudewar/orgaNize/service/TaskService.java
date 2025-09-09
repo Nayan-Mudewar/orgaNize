@@ -6,11 +6,9 @@ import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
-import com.github.Nayan_Mudewar.orgaNize.util.enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
