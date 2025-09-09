@@ -63,9 +63,9 @@ public class UserService {
         }
     }
 
-    public String deleteByname(String username,UserRequestDto dto){
-        userrepository.deleteByname(username);
-        return "user deleted successfully";
+    public boolean deleteByname(Long username){
+        userrepository.deleteById(username);
+        return true;
         }
 
 
