@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

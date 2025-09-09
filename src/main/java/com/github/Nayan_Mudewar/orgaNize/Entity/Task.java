@@ -1,12 +1,16 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
+import com.github.Nayan_Mudewar.orgaNize.util.enums;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "task")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +19,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private long id;
 
     @Column(nullable = false, length = 200)
     private String title;
@@ -24,7 +28,7 @@ public class Task {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.TODO;
+    private enums.Status status = enums.Status.TODO;
 
     private LocalDateTime dueDate;
 
@@ -35,13 +39,12 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
-
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public enum Status {
-        TODO, IN_PROGRESS, DONE
-    }
+
 }

@@ -1,15 +1,14 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.github.Nayan_Mudewar.orgaNize.util.enums;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -20,25 +19,24 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private long id;
     @NotBlank
-    @Size(min=2,max=100)
+    @Size(min = 2, max = 100)
     private String name;
     @NotBlank
-    @Email
-    @Size(max=100)
+    @Size(max = 100)
     private String email;
     @NotBlank
-    @Size(min=6,max=100)
+    @Size(min = 6, max = 100)
     private String password;
-    private Role role=Role.USER;
-    private LocalDateTime createdAt= LocalDateTime.now();
-    private Boolean isActive=true;
+    private enums.Role role = enums.Role.USER;
 
-    public enum Role{
-        USER,ADMIN
-    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    private Boolean isActive = true;
+
+
 
 
 }
