@@ -31,7 +31,7 @@ public class UserController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity deleteUser(@PathVariable Long id) {
-        boolean deleted = userService.deleteByname(id);
+        boolean deleted = userService.deleteById(id);
         if (!deleted) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
@@ -39,12 +39,12 @@ public class UserController {
 
     }
 
-    @PutMapping("update/{name}")
+    @PutMapping("update/{id}")
     public ResponseEntity<UserResponseDto> updateUser(
-            @PathVariable String name,
+            @PathVariable Long id,
             @RequestBody UserRequestDto dto) {
 
-        UserResponseDto updatedUser = userService.updateByName(name, dto);
+        UserResponseDto updatedUser = userService.updateById(id, dto);
         if (updatedUser == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
         }

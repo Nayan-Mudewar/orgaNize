@@ -84,13 +84,14 @@ public class TaskService {
         Optional<Task> optionaltask = taskRepository.findById(id);
         if (optionaltask.isPresent()) {
             Task present = optionaltask.get();
-            present.setDueDate(request.getDueDate());
-            present.setTitle(request.getTitle());
-            present.setStatus(request.getStatus());
-            present.setDescription(request.getDescription());
-
-            User user = userRepository.findByName(request.getCreatedByName()).orElseThrow(() -> new RuntimeException("user not found"));
-            present.setCreatedBy(user);
+            if(request.getDueDate()!=null) present.setDueDate(request.getDueDate());
+            if(request.getTitle()!=null) present.setTitle(request.getTitle());
+            if(request.getStatus()!=null) present.setStatus(request.getStatus());
+            if(request.getDescription()!=null) present.setDescription(request.getDescription());
+            if(request.getCreatedByName()!=null) {
+                User user = userRepository.findByName(request.getCreatedByName()).orElseThrow(() -> new RuntimeException("user not found"));
+                present.setCreatedBy(user);
+            }
 
 
             Task updated = taskRepository.save(present);

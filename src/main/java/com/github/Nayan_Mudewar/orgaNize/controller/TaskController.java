@@ -1,5 +1,6 @@
 package com.github.Nayan_Mudewar.orgaNize.controller;
 
+import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
@@ -36,6 +37,14 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long id,@RequestBody TaskRequestDto dto){
+        TaskResponseDto updateTask=taskService.updateTask(id,dto);
+        if(updateTask==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(updateTask);
     }
 }
 

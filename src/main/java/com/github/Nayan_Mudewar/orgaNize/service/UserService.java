@@ -38,8 +38,8 @@ public class UserService {
         return responseDtos;
     }
 
-    public UserResponseDto getUserByName(String username) {
-        Optional<User> userOptional = userrepository.findByName(username);
+    public UserResponseDto getUserByName(Long id) {
+        Optional<User> userOptional = userrepository.findById(id);
         if (userOptional.isPresent()) {
             return mapToResponseDto(userOptional.get());
         } else {
@@ -47,8 +47,8 @@ public class UserService {
         }
     }
 
-    public UserResponseDto updateByName(String username,UserRequestDto dto){
-        Optional<User> useroptional=userrepository.findByName(username);
+    public UserResponseDto updateById(Long id,UserRequestDto dto){
+        Optional<User> useroptional=userrepository.findById(id);
         if(useroptional.isPresent()){
             User present=useroptional.get();
             present.setEmail(dto.getEmail());
@@ -63,8 +63,8 @@ public class UserService {
         }
     }
 
-    public boolean deleteByname(Long username){
-        userrepository.deleteById(username);
+    public boolean deleteById(Long id){
+        userrepository.deleteById(id);
         return true;
         }
 
