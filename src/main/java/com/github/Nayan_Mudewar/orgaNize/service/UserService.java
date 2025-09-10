@@ -6,6 +6,7 @@ import com.github.Nayan_Mudewar.orgaNize.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -47,29 +48,29 @@ public class UserService {
         }
     }
 
-    public UserResponseDto updateById(Long id,UserRequestDto dto){
-        Optional<User> useroptional=userrepository.findById(id);
-        if(useroptional.isPresent()){
-            User present=useroptional.get();
+    public UserResponseDto updateById(Long id, UserRequestDto dto) {
+        Optional<User> useroptional = userrepository.findById(id);
+        if (useroptional.isPresent()) {
+            User present = useroptional.get();
             present.setEmail(dto.getEmail());
             present.setPassword(dto.getPassword());
             present.setName(dto.getName());
             present.setRole(dto.getRole());
 
-            User updated=userrepository.save(present);
+            User updated = userrepository.save(present);
             return mapToResponseDto(updated);
-        }else{
+        } else {
             return null;
         }
     }
 
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
         userrepository.deleteById(id);
         return true;
-        }
+    }
 
 
-    public UserResponseDto mapToResponseDto(User user){
-        return new UserResponseDto(user.getId(),user.getName(),user.getEmail());
+    public UserResponseDto mapToResponseDto(User user) {
+        return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 }

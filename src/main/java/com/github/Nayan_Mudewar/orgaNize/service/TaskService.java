@@ -115,12 +115,12 @@ public class TaskService {
 
     }
 
-    public List<TaskResponseDto> TaskAssignTo(String name){
-        User user=userRepository.findByName(name).orElseThrow(()->new RuntimeException("User not Found"));
-        List<Task> tasks=taskRepository.findByAssignedTo(user);
-        List<TaskResponseDto> response=new ArrayList<>();
+    public List<TaskResponseDto> TaskAssignTo(String name) {
+        User user = userRepository.findByName(name).orElseThrow(() -> new RuntimeException("User not Found"));
+        List<Task> tasks = taskRepository.findByAssignedTo(user);
+        List<TaskResponseDto> response = new ArrayList<>();
 
-        for(Task task:tasks){
+        for (Task task : tasks) {
             response.add(mapToResponseDTO(task));
         }
         return response;

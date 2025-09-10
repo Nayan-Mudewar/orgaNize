@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     @Autowired
     private CommentService commentService;
+
     @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment){
+    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         ;
         return ResponseEntity.ok(commentService.createComment(comment));
     }
+
     @DeleteMapping
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id){
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }

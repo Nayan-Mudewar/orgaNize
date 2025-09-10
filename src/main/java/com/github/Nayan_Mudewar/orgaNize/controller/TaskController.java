@@ -20,6 +20,7 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService taskService;
+
     @PostMapping
     public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto request) {
         return ResponseEntity.ok(taskService.createTask(request));
@@ -40,25 +41,26 @@ public class TaskController {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long id,@RequestBody TaskRequestDto dto){
-        TaskResponseDto updateTask=taskService.updateTask(id,dto);
-        if(updateTask==null){
+    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long id, @RequestBody TaskRequestDto dto) {
+        TaskResponseDto updateTask = taskService.updateTask(id, dto);
+        if (updateTask == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(updateTask);
     }
 
     @PutMapping("/{id}/assign")
-    public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id,@RequestBody TaskassignedtoDto dto){
+    public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id, @RequestBody TaskassignedtoDto dto) {
 
-        return ResponseEntity.ok(taskService.assignTask(id,dto));
+        return ResponseEntity.ok(taskService.assignTask(id, dto));
     }
 
     @GetMapping("/name")
-    public ResponseEntity<List<TaskResponseDto>> getAssignedTaskList(@PathVariable String name){
-       ;
-        return ResponseEntity.ok( taskService.TaskAssignTo(name));
+    public ResponseEntity<List<TaskResponseDto>> getAssignedTaskList(@PathVariable String name) {
+        ;
+        return ResponseEntity.ok(taskService.TaskAssignTo(name));
     }
 }
 

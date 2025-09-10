@@ -9,20 +9,21 @@ import java.util.Optional;
 
 @Service
 public class CommentService {
-     @Autowired
+    @Autowired
     private CommentRepository commentRepository;
 
-     public Comment createComment(Comment comment){
-         Comment Comment=new Comment();
-         Comment.setTask(comment.getTask());
-         Comment.setText(comment.getText());
-         Comment.setUser(comment.getUser());
-         commentRepository.save(Comment);
-         return Comment;
-     }
-     public void deleteComment(Long id) {
-         commentRepository.deleteById(id);
-     }
+    public Comment createComment(Comment comment) {
+        Comment Comment = new Comment();
+        Comment.setTask(comment.getTask());
+        Comment.setText(comment.getText());
+        Comment.setUser(comment.getUser());
+        commentRepository.save(Comment);
+        return Comment;
+    }
+
+    public void deleteComment(Long id) {
+        commentRepository.deleteById(id);
+    }
 
 
 }
