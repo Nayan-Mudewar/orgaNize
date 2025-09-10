@@ -6,6 +6,8 @@ import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskassignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.service.TaskService;
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -59,8 +61,14 @@ public class TaskController {
 
     @GetMapping("/name")
     public ResponseEntity<List<TaskResponseDto>> getAssignedTaskList(@PathVariable String name) {
-        ;
+
         return ResponseEntity.ok(taskService.TaskAssignTo(name));
+    }
+
+    @GetMapping("/status/{Status}&{id}")
+    public ResponseEntity<List<TaskResponseDto>> getAssignedTasks(@PathVariable Status status,@PathVariable String name){
+        List<TaskResponseDto> dto=taskService.filterByStatusAndName(status,name);
+        return ResponseEntity.ok(dto);
     }
 }
 

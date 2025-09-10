@@ -2,6 +2,7 @@ package com.github.Nayan_Mudewar.orgaNize.repository;
 
 import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByAssignedTo(User user);
 
     void deleteById(Long id);
+
+    List<Task> getByStatus(Status status);
+    List<Task> getByStatusAndAssignedTo(Status status,String name);
 }

@@ -7,6 +7,7 @@ import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskassignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -122,6 +123,15 @@ public class TaskService {
 
         for (Task task : tasks) {
             response.add(mapToResponseDTO(task));
+        }
+        return response;
+    }
+
+    public List<TaskResponseDto> filterByStatusAndName(Status status, String name){
+        List<Task> taskList=taskRepository.getByStatusAndAssignedTo(status,name);
+        List<TaskResponseDto> response=new ArrayList<>();
+        for(Task Task:taskList){
+            response.add(mapToResponseDTO(Task));
         }
         return response;
     }
