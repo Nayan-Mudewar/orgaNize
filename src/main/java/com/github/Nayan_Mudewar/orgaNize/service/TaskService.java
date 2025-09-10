@@ -6,6 +6,7 @@ import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class TaskService {
         Task task = Task.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .status(enums.Status.valueOf(request.getStatus()))
+                .status(Status.valueOf(request.getStatus()))
                 .dueDate(request.getDueDate())
                 .createdBy(createdBy)
                 .assignedTo(assignedTo)

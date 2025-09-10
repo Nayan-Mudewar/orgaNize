@@ -1,11 +1,14 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+
+import static com.github.Nayan_Mudewar.orgaNize.util.enums.Status.TODO;
 
 @Entity
 @Table(name = "task")
@@ -16,18 +19,20 @@ import java.time.LocalDateTime;
 public class Task {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
+    @Column(name="title",nullable = false, length = 200)
     private String title;
 
-    @Column(length = 1000)
+    @Column(name="description",length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private enums.Status status = enums.Status.TODO;
-
+    @Column(name="status")
+    private Status status = TODO;
+    @Column(name="dueDate")
     private LocalDateTime dueDate;
 
     @ManyToOne

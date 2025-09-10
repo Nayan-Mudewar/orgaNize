@@ -47,7 +47,7 @@ public class UserService {
         }
     }
 
-    public UserResponseDto updateByname(String username,UserRequestDto dto){
+    public UserResponseDto updateByName(String username,UserRequestDto dto){
         Optional<User> useroptional=userrepository.findByName(username);
         if(useroptional.isPresent()){
             User present=useroptional.get();

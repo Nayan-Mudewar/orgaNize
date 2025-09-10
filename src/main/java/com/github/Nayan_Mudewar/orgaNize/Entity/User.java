@@ -21,20 +21,22 @@ import static com.github.Nayan_Mudewar.orgaNize.util.enums.Role.USER;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private long id;
 
     @NotBlank
     @Size(min = 2, max = 100)
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(name="name", unique = true, nullable = false, length = 100)
     private String name;
 
     @NotBlank
     @Size(max = 100)
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(name="email", unique = true, nullable = false, length = 100)
     private String email;
 
     @NotBlank
     @Size(min = 6, max = 100)
+    @Column(name="password")
     private String password;
 
     private Role role = USER;
