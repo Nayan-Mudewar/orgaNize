@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +38,7 @@ public class TaskService {
         Task task = Task.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .status(Status.valueOf(request.getStatus()))
+                .status(request.getStatus())
                 .dueDate(request.getDueDate())
                 .createdBy(createdBy)
                 .assignedTo(assignedTo)
@@ -52,7 +53,7 @@ public class TaskService {
                 .id(task.getId())
                 .title(task.getTitle())
                 .description(task.getDescription())
-                .status(task.getStatus().name())
+                .status(task.getStatus())
                 .dueDate(task.getDueDate())
                 .createdByName(task.getCreatedBy().getName())
                 .assignedToName(task.getAssignedTo() != null ? task.getAssignedTo().getName() : null)
@@ -79,7 +80,30 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
+    public TaskResponseDto updateTask(Long id, TaskRequestDto request) {
+        Optional<Task> optionaltask = taskRepository.findById(id);
+        if (optionaltask.isPresent()) {
+            Task present = optionaltask.get();
+            present.setDueDate(request.getDueDate());
+            present.setTitle(request.getTitle());
+            present.setStatus(request.getStatus());
+            present.setDescription(request.getDescription());
 
+            User user = userRepository.findByName(request.getCreatedByName()).orElseThrow(() -> new RuntimeException("user not found"));
+            present.setCreatedBy(user);
+
+
+            Task updated = taskRepository.save(present);
+            return mapToResponseDTO(updated);
+        } else {
+            return null;
+        }
+    }
 }
+
+
+
+
+
 
 

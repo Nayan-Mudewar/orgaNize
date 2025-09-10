@@ -20,7 +20,7 @@ public class UserService {
     public UserResponseDto createUser(UserRequestDto dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
-        user.setName(dto.getUsername());
+        user.setName(dto.getName());
         user.setPassword(dto.getPassword());
         userrepository.save(user);
 
@@ -53,7 +53,7 @@ public class UserService {
             User present=useroptional.get();
             present.setEmail(dto.getEmail());
             present.setPassword(dto.getPassword());
-            present.setName(dto.getUsername());
+            present.setName(dto.getName());
             present.setRole(dto.getRole());
 
             User updated=userrepository.save(present);

@@ -11,7 +11,7 @@ import static com.github.Nayan_Mudewar.orgaNize.util.enums.Role.USER;
 public class UserRequestDto {
     @NotBlank
     @Size(min=2,max=100)
-    private String username;
+    private String name;
     @NotBlank
     @Size(min=2,max=100)
     private String password;

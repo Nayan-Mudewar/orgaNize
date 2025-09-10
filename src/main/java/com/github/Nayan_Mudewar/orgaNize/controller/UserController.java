@@ -39,12 +39,12 @@ public class UserController {
 
     }
 
-    @PutMapping("update/{username}")
+    @PutMapping("update/{name}")
     public ResponseEntity<UserResponseDto> updateUser(
-            @PathVariable String username,
+            @PathVariable String name,
             @RequestBody UserRequestDto dto) {
 
-        UserResponseDto updatedUser = userService.updateByname(username, dto);
+        UserResponseDto updatedUser = userService.updateByName(name, dto);
         if (updatedUser == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
         }

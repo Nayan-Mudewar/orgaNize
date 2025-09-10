@@ -1,6 +1,7 @@
 package com.github.Nayan_Mudewar.orgaNize.dto;
 
 
+import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,10 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskResponseDto{
-    private long id;
+    private Long id;
     private String title;
     private String description;
-    private String status;
+    private Status status;
     private LocalDateTime dueDate;
     private String createdByName;
     private String assignedToName;

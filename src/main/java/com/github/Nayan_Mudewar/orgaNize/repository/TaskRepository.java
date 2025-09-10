@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface TaskRepository extends JpaRepository<Task,Long> {
-    Optional<Task> findByTitle(String name);
-    void deleteByTitle(String title);
+    Optional<Task> findById(Long id);
+    void deleteById(Long id);
 }

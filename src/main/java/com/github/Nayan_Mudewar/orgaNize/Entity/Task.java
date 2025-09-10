@@ -19,20 +19,20 @@ import static com.github.Nayan_Mudewar.orgaNize.util.enums.Status.TODO;
 public class Task {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="title",nullable = false, length = 200)
+    @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name="description",length = 1000)
+    @Column(name = "description", length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="status")
+    @Column(name = "status")
     private Status status = TODO;
-    @Column(name="dueDate")
+    @Column(name = "dueDate")
     private LocalDateTime dueDate;
 
     @ManyToOne
