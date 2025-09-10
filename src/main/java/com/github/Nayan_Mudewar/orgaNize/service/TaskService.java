@@ -4,12 +4,13 @@ import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
+import com.github.Nayan_Mudewar.orgaNize.dto.TaskassignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
-import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,11 +85,11 @@ public class TaskService {
         Optional<Task> optionaltask = taskRepository.findById(id);
         if (optionaltask.isPresent()) {
             Task present = optionaltask.get();
-            if(request.getDueDate()!=null) present.setDueDate(request.getDueDate());
-            if(request.getTitle()!=null) present.setTitle(request.getTitle());
-            if(request.getStatus()!=null) present.setStatus(request.getStatus());
-            if(request.getDescription()!=null) present.setDescription(request.getDescription());
-            if(request.getCreatedByName()!=null) {
+            if (request.getDueDate() != null) present.setDueDate(request.getDueDate());
+            if (request.getTitle() != null) present.setTitle(request.getTitle());
+            if (request.getStatus() != null) present.setStatus(request.getStatus());
+            if (request.getDescription() != null) present.setDescription(request.getDescription());
+            if (request.getCreatedByName() != null) {
                 User user = userRepository.findByName(request.getCreatedByName()).orElseThrow(() -> new RuntimeException("user not found"));
                 present.setCreatedBy(user);
             }
@@ -100,7 +101,32 @@ public class TaskService {
             return null;
         }
     }
+
+    public TaskResponseDto assignTask(Long id, TaskassignedtoDto dto) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found" + id));
+
+        User user = userRepository.findByName(dto.getAssignedToName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        task.setAssignedTo(user);
+        Task updated = taskRepository.save(task);
+        return mapToResponseDTO(updated);
+
+    }
+
+    public List<TaskResponseDto> TaskAssignTo(String name){
+        User user=userRepository.findByName(name).orElseThrow(()->new RuntimeException("User not Found"));
+        List<Task> tasks=taskRepository.findByAssignedTo(user);
+        List<TaskResponseDto> response=new ArrayList<>();
+
+        for(Task task:tasks){
+            response.add(mapToResponseDTO(task));
+        }
+        return response;
+    }
 }
+
 
 
 

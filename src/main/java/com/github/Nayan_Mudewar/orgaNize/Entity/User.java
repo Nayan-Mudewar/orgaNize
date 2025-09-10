@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.Nayan_Mudewar.orgaNize.util.enums.Role.USER;
 
@@ -45,5 +47,10 @@ public class User {
     private LocalDateTime createdAt;
 
     private Boolean isActive = true;
+
+    @OneToMany(mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+    List<Task> createdTasks=new ArrayList<>();
+    @OneToMany(mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+    List<Task> assignTasks=new ArrayList<>();
 
 }

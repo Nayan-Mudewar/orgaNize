@@ -3,10 +3,12 @@ package com.github.Nayan_Mudewar.orgaNize.controller;
 import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
+import com.github.Nayan_Mudewar.orgaNize.dto.TaskassignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,18 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(updateTask);
+    }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id,@RequestBody TaskassignedtoDto dto){
+
+        return ResponseEntity.ok(taskService.assignTask(id,dto));
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<TaskResponseDto>> getAssignedTaskList(@PathVariable String name){
+       ;
+        return ResponseEntity.ok( taskService.TaskAssignTo(name));
     }
 }
 
