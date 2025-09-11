@@ -1,5 +1,6 @@
 package com.github.Nayan_Mudewar.orgaNize.security;
 
+import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,12 @@ public class CustomUserDetailService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        userRepository.findByName(username).orElseThrow(()->new RuntimeException("Username not found"));
+         User user=userRepository.findByName(username).orElseThrow(()->new RuntimeException("Username not found"));
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getName())
+                .password(user.getPassword())
+                .authorities("USER") // or map your actual roles here
+                .build();
     }
 }
