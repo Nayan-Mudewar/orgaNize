@@ -26,4 +26,23 @@ public class AuthUtil {
     public SecretKey getSecretKey(){
        return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
+
+    public String extractUsername(String token) {
+        return Jwts.parser().setSigningKey(jwtSecretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token, org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return extractUsername(token).equals(userDetails.getUsername()) && !isExpired(token);
+    }
+
+    private boolean isExpired(String token) {
+        Date expiration = Jwts.parser().setSigningKey(jwtSecretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return expiration.before(new Date());
+    }
 }

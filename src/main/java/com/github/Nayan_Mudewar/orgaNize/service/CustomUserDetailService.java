@@ -1,4 +1,4 @@
-package com.github.Nayan_Mudewar.orgaNize.security;
+package com.github.Nayan_Mudewar.orgaNize.service;
 
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;

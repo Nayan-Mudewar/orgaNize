@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,6 +20,7 @@ import static com.github.Nayan_Mudewar.orgaNize.util.enums.Role.USER;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name="users")
 public class User {
     @Id

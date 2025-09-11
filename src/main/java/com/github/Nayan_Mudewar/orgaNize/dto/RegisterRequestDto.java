@@ -1,15 +1,16 @@
 package com.github.Nayan_Mudewar.orgaNize.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class UserResponseDto {
-    private Long id;
+public class RegisterRequestDto {
     private String name;
-    private String email;
+    private String password;
+    private String mail;
 }
