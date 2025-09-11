@@ -18,5 +18,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     void deleteById(Long id);
 
     List<Task> getByStatus(Status status);
-    List<Task> getByStatusAndAssignedTo(Status status,String name);
+
+    List<Task> getByStatusAndAssignedTo_Name(Status status, String name);
 }

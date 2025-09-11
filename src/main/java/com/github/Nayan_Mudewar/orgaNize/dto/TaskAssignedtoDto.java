@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskassignedtoDto {
-    private String assignedToName;
+public class TaskAssignedtoDto {
+    private Long assignedToId;
 }

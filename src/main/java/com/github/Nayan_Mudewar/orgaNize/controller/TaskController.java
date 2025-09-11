@@ -1,18 +1,13 @@
 package com.github.Nayan_Mudewar.orgaNize.controller;
 
-import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
-import com.github.Nayan_Mudewar.orgaNize.dto.TaskassignedtoDto;
-import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
+import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.service.TaskService;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,21 +48,19 @@ public class TaskController {
         return ResponseEntity.ok(updateTask);
     }
 
-    @PutMapping("/{id}/assign")
-    public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id, @RequestBody TaskassignedtoDto dto) {
-
+    @PutMapping("/assign/{id}")
+    public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id, @RequestBody TaskAssignedtoDto dto) {
         return ResponseEntity.ok(taskService.assignTask(id, dto));
     }
 
-    @GetMapping("/name")
+    @GetMapping("/AssignTasks/{name}")
     public ResponseEntity<List<TaskResponseDto>> getAssignedTaskList(@PathVariable String name) {
-
         return ResponseEntity.ok(taskService.TaskAssignTo(name));
     }
 
-    @GetMapping("/status/{Status}&{id}")
-    public ResponseEntity<List<TaskResponseDto>> getAssignedTasks(@PathVariable Status status,@PathVariable String name){
-        List<TaskResponseDto> dto=taskService.filterByStatusAndName(status,name);
+    @GetMapping("/filter")
+    public ResponseEntity<List<TaskResponseDto>> getAssignedTasks(@RequestParam Status status, @RequestParam String name) {
+        List<TaskResponseDto> dto = taskService.filterByStatusAndName(status, name);
         return ResponseEntity.ok(dto);
     }
 }

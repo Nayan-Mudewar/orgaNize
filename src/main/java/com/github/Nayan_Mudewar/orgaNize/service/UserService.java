@@ -33,7 +33,7 @@ public class UserService {
         List<UserResponseDto> responseDtos = new ArrayList<>();
 
         for (User user : users) {
-            responseDtos.add(mapToResponseDto(user));
+            responseDtos.add(mapToUserResponseDto(user));
         }
 
         return responseDtos;
@@ -42,7 +42,7 @@ public class UserService {
     public UserResponseDto getUserByName(Long id) {
         Optional<User> userOptional = userrepository.findById(id);
         if (userOptional.isPresent()) {
-            return mapToResponseDto(userOptional.get());
+            return mapToUserResponseDto(userOptional.get());
         } else {
             return null;
         }
@@ -58,7 +58,7 @@ public class UserService {
             present.setRole(dto.getRole());
 
             User updated = userrepository.save(present);
-            return mapToResponseDto(updated);
+            return mapToUserResponseDto(updated);
         } else {
             return null;
         }
@@ -70,7 +70,7 @@ public class UserService {
     }
 
 
-    public UserResponseDto mapToResponseDto(User user) {
+    public UserResponseDto mapToUserResponseDto(User user) {
         return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 }

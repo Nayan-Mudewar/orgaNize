@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class OrgaNizeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OrgaNizeApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(OrgaNizeApplication.class, args);
 
-	}
+    }
 
 }

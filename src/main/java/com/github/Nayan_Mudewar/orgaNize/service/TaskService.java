@@ -4,12 +4,14 @@ import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
-import com.github.Nayan_Mudewar.orgaNize.dto.TaskassignedtoDto;
+import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.github.Nayan_Mudewar.orgaNize.service.UserService;
+import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class TaskService {
     private TaskRepository taskRepository;
     @Autowired
     private UserRepository userRepository;
+
 
     public TaskResponseDto createTask(TaskRequestDto request) {
         // find creator by username
@@ -57,8 +60,8 @@ public class TaskService {
                 .description(task.getDescription())
                 .status(task.getStatus())
                 .dueDate(task.getDueDate())
-                .createdByName(task.getCreatedBy().getName())
-                .assignedToName(task.getAssignedTo() != null ? task.getAssignedTo().getName() : null)
+                .createdBy(mapToUserResponseDto(task.getCreatedBy()))
+                .assignedTo(task.getAssignedTo() != null ? (mapToUserResponseDto(task.getAssignedTo())) : null)
                 .createdAt(task.getCreatedAt())
                 .updatedAt(task.getUpdatedAt())
                 .build();
@@ -103,11 +106,11 @@ public class TaskService {
         }
     }
 
-    public TaskResponseDto assignTask(Long id, TaskassignedtoDto dto) {
+    public TaskResponseDto assignTask(Long id, TaskAssignedtoDto dto) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found" + id));
 
-        User user = userRepository.findByName(dto.getAssignedToName())
+        User user = userRepository.findById(dto.getAssignedToId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         task.setAssignedTo(user);
@@ -127,14 +130,19 @@ public class TaskService {
         return response;
     }
 
-    public List<TaskResponseDto> filterByStatusAndName(Status status, String name){
-        List<Task> taskList=taskRepository.getByStatusAndAssignedTo(status,name);
-        List<TaskResponseDto> response=new ArrayList<>();
-        for(Task Task:taskList){
+    public List<TaskResponseDto> filterByStatusAndName(Status status, String name) {
+        List<Task> taskList = taskRepository.getByStatusAndAssignedTo_Name(status, name);
+        List<TaskResponseDto> response = new ArrayList<>();
+        for (Task Task : taskList) {
             response.add(mapToResponseDTO(Task));
         }
         return response;
     }
+
+    private UserResponseDto mapToUserResponseDto(User user) {
+        return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
+    }
+
 }
 
 
