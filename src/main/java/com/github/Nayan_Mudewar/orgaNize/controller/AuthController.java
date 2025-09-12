@@ -1,3 +1,5 @@
+package com.github.Nayan_Mudewar.orgaNize.controller;
+
 import com.github.Nayan_Mudewar.orgaNize.dto.LoginRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.LoginResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserRequestDto;

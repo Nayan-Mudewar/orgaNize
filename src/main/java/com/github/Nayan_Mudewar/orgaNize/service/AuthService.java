@@ -6,8 +6,10 @@ import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import com.github.Nayan_Mudewar.orgaNize.security.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,22 +27,31 @@ public class AuthService {
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
+                .role(dto.getRole())
                 .build();
         User saved = userRepository.save(user);
         return new UserResponseDto(saved.getId(), saved.getName(), saved.getEmail());
     }
 
     public LoginResponseDto login(LoginRequestDto dto) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getName(), dto.getPassword())
-        );
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(dto.getName(), dto.getPassword())
+            );
 
-        User user = (User) auth.getPrincipal();
-        String token = authUtil.generateToken(user);
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            User user = userRepository.findByName(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return LoginResponseDto.builder()
-                .token(token)
-                .user(new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .build();
+            String token = authUtil.generateToken(user);
+
+            return LoginResponseDto.builder()
+                    .token(token)
+                    .user(new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
+                    .build();
+        }catch (BadCredentialsException ex){
+            throw new RuntimeException("user not found");
+
+        }
     }
 }

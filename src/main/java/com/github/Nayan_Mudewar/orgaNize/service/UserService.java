@@ -4,6 +4,7 @@ import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 
@@ -17,12 +18,17 @@ public class UserService {
 
     @Autowired
     private UserRepository userrepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public UserResponseDto createUser(UserRequestDto dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
         user.setName(dto.getName());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userrepository.save(user);
 
         return new UserResponseDto(user.getId(), user.getName(), user.getEmail());

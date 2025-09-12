@@ -21,8 +21,10 @@ server:
 
 logging:
   level:
+    org.springframework.security: DEBUG
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
 jwt:
-  secretKey: sdfdsfvgdfdfsvdfvdvddgvdfs23134344r35r353dfdevdfg52rev34r24v
+  secretKey: "mK9hXQ2+ZbI8h2K5Zp4v9Pqzj6nF0xE3QlWc2Xy9f3k="

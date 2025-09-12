@@ -43,7 +43,7 @@ public class User {
     @Column(name="password")
     private String password;
 
-    private Role role = USER;
+    private Role role;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
