@@ -2,6 +2,8 @@ package com.github.Nayan_Mudewar.orgaNize.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -14,7 +16,7 @@ import java.util.UUID;
 public class ActivityLog {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
