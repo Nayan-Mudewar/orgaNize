@@ -1,5 +1,6 @@
 package com.github.Nayan_Mudewar.orgaNize.controller;
 
+import com.github.Nayan_Mudewar.orgaNize.annotation.LogActivity;
 import com.github.Nayan_Mudewar.orgaNize.dto.LoginRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.LoginResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserRequestDto;
@@ -25,6 +26,7 @@ public class AuthController{
     }
 
     @PostMapping("/login")
+    @LogActivity(actionType="LOGIN", details="User logged in")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
