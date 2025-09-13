@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/activitylog")
+@RequestMapping("/activity-log")
 public class ActivityLogController {
     @Autowired
     private ActivityLogService activityLogService;
@@ -25,7 +25,7 @@ public class ActivityLogController {
     public ResponseEntity<List<ActivityLog>> getActivityLogs() {
        return  ResponseEntity.ok(activityLogRepository.findAll());
     }
-    @GetMapping("/activity-log/me")
+    @GetMapping("/me")
     public ResponseEntity<List<ActivityLog>> getMyActivityLog(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();

@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-
+        System.out.println("JWT filter hit");
         String authHeader = request.getHeader("Authorization");
         String username = null;
         String token = null;
@@ -45,7 +45,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Token is valid");
+            }else{
+                System.out.println("Token is invalid");
             }
+        }
+
+        if (username == null && authHeader != null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
+            return;
         }
 
         filterChain.doFilter(request, response);
