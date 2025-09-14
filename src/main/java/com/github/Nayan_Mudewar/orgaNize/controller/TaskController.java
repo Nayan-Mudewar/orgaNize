@@ -20,7 +20,7 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
-    @LogActivity(actionType="CREATE", details="Created a task")
+    @LogActivity(actionType = "CREATE", details = "Created a task")
     public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto request) {
         return ResponseEntity.ok(taskService.createTask(request));
     }
@@ -36,14 +36,14 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    @LogActivity(actionType="DELETE", details="Deleted a task")
+    @LogActivity(actionType = "DELETE", details = "Deleted a task")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    @LogActivity(actionType="UPDATE", details="Updated a task")
+    @LogActivity(actionType = "UPDATE", details = "Updated a task")
     public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long id, @RequestBody TaskRequestDto dto) {
         TaskResponseDto updateTask = taskService.updateTask(id, dto);
         if (updateTask == null) {
@@ -53,7 +53,7 @@ public class TaskController {
     }
 
     @PutMapping("/assign/{id}")
-    @LogActivity(actionType="ASSIGN TASK", details="Assign  task")
+    @LogActivity(actionType = "ASSIGN TASK", details = "Assign  task")
     public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id, @RequestBody TaskAssignedtoDto dto) {
         return ResponseEntity.ok(taskService.assignTask(id, dto));
     }

@@ -30,6 +30,12 @@ public class WebSecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/tasks/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers(HttpMethod.GET, "/activity-log/**").authenticated()

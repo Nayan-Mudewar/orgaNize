@@ -23,7 +23,7 @@ public class ActivityLogController {
     private ActivityLogRepository activityLogRepository;
     @GetMapping
     public ResponseEntity<List<ActivityLog>> getActivityLogs() {
-       return  ResponseEntity.ok(activityLogRepository.findAll());
+        return ResponseEntity.ok(activityLogRepository.findAll());
     }
     @GetMapping("/me")
     public ResponseEntity<List<ActivityLog>> getMyActivityLog(Authentication authentication) {

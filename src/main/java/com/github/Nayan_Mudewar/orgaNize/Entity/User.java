@@ -52,6 +52,7 @@ public class User {
 
     @OneToMany(mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
     List<Task> createdTasks=new ArrayList<>();
+
     @OneToMany(mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
     List<Task> assignTasks=new ArrayList<>();
 

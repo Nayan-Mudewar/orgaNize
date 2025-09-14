@@ -24,16 +24,17 @@ import java.util.Date;
 public class ActivityLogAspect {
 
     private final ActivityLogService activityLogService;
+
     @AfterReturning("@annotation(com.github.Nayan_Mudewar.orgaNize.annotation.LogActivity)")
-    public void logActivity(JoinPoint joinPoint){
-        MethodSignature methodSignature=(MethodSignature) joinPoint.getSignature();
-        LogActivity annotation=methodSignature.getMethod().getAnnotation(LogActivity.class);
-        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+    public void logActivity(JoinPoint joinPoint) {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        LogActivity annotation = methodSignature.getMethod().getAnnotation(LogActivity.class);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
             Long userId = userDetails.getUserId();
 
-            ActivityLogRequestDto dto=ActivityLogRequestDto.builder()
+            ActivityLogRequestDto dto = ActivityLogRequestDto.builder()
                     .userId(userId)
                     .actionType(annotation.actionType())
                     .taskId(null)
@@ -43,11 +44,9 @@ public class ActivityLogAspect {
 
             activityLogService.logActivity(dto);
 
-            }
         }
-
-
-
-
     }
+
+
+}
 
