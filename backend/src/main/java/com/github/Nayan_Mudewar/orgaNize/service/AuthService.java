@@ -23,12 +23,17 @@ public class AuthService {
     private final AuthUtil authUtil;
 
     public UserResponseDto register(UserRequestDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalStateException("Email already in use");
+        }
+
         User user = User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .role(dto.getRole())
                 .build();
+
         User saved = userRepository.save(user);
         return new UserResponseDto(saved.getId(), saved.getName(), saved.getEmail());
     }
@@ -49,9 +54,8 @@ public class AuthService {
                     .token(token)
                     .user(new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
                     .build();
-        }catch (BadCredentialsException ex){
-            throw new RuntimeException("user not found");
-
+        } catch (BadCredentialsException ex) {
+            throw new RuntimeException("Invalid username or password");
         }
     }
 }
