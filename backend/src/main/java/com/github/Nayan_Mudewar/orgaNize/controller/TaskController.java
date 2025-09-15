@@ -16,57 +16,90 @@ import java.util.List;
 @RestController
 @RequestMapping("api/tasks")
 public class TaskController {
+
     @Autowired
     private TaskService taskService;
 
     @PostMapping
     @LogActivity(actionType = "CREATE", details = "Created a task")
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto request) {
-        return ResponseEntity.ok(taskService.createTask(request));
+    public ResponseEntity<?> createTask(@RequestBody(required = false) TaskRequestDto request) {
+        if (request == null || request.getTitle() == null || request.getCreatedByName() == null) {
+            return ResponseEntity.badRequest().body("Title and createdByName are required");
+        }
+        try {
+            TaskResponseDto dto = taskService.createTask(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskResponseDto>> getAllTasks() {
-        return ResponseEntity.ok(taskService.getAllTasks());
+    public ResponseEntity<?> getAllTasks() {
+        List<TaskResponseDto> tasks = taskService.getAllTasks();
+        if (tasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable Long id) {
-        return ResponseEntity.ok(taskService.getTaskById(id));
+    public ResponseEntity<?> getTaskById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(taskService.getTaskById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     @LogActivity(actionType = "DELETE", details = "Deleted a task")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
+    public ResponseEntity<?> deleteTask(@PathVariable Long id) {
+        boolean deleted = taskService.deleteTask(id);
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
+        }
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     @LogActivity(actionType = "UPDATE", details = "Updated a task")
-    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long id, @RequestBody TaskRequestDto dto) {
+    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody(required = false) TaskRequestDto dto) {
+        if (dto == null) {
+            return ResponseEntity.badRequest().body("Task data is required");
+        }
         TaskResponseDto updateTask = taskService.updateTask(id, dto);
         if (updateTask == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
         }
         return ResponseEntity.ok(updateTask);
     }
 
     @PutMapping("/assign/{id}")
-    @LogActivity(actionType = "ASSIGN TASK", details = "Assign  task")
-    public ResponseEntity<TaskResponseDto> assignTask(@PathVariable Long id, @RequestBody TaskAssignedtoDto dto) {
-        return ResponseEntity.ok(taskService.assignTask(id, dto));
+    @LogActivity(actionType = "ASSIGN TASK", details = "Assign task")
+    public ResponseEntity<?> assignTask(@PathVariable Long id, @RequestBody TaskAssignedtoDto dto) {
+        try {
+            return ResponseEntity.ok(taskService.assignTask(id, dto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/AssignTasks/{name}")
-    public ResponseEntity<List<TaskResponseDto>> getAssignedTaskList(@PathVariable String name) {
-        return ResponseEntity.ok(taskService.TaskAssignTo(name));
+    public ResponseEntity<?> getAssignedTaskList(@PathVariable String name) {
+        try {
+            return ResponseEntity.ok(taskService.TaskAssignTo(name));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<TaskResponseDto>> getAssignedTasks(@RequestParam Status status, @RequestParam String name) {
+    public ResponseEntity<?> getAssignedTasks(@RequestParam Status status, @RequestParam String name) {
         List<TaskResponseDto> dto = taskService.filterByStatusAndName(status, name);
+        if (dto.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(dto);
     }
 }
-
