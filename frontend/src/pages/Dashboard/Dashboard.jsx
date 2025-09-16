@@ -3,16 +3,33 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TaskCard from "../../components/TaskCard";
+import CreateTaskModal from "../../components/CreateTaskModal";
+
 export default function Dashboard() {
   const { logout, token } = useAuth();
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleTaskUpdated = (taskId, updatedTask) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === taskId ? { ...task, ...updatedTask } : task))
+    );
+  };
+
+  const handleTaskDeleted = (taskId) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  };
+
+  const handleTaskCreated = (newTask) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
   useEffect(() => {
@@ -61,12 +78,20 @@ export default function Dashboard() {
         {/* Top Navbar */}
         <header className="bg-white border-b p-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold">Dashboard</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
-            Logout
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            >
+              Create Task
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
         </header>
 
         {/* Page Content */}
@@ -83,7 +108,12 @@ export default function Dashboard() {
           {!loading && tasks.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {tasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onTaskUpdated={handleTaskUpdated}
+                  onTaskDeleted={handleTaskDeleted}
+                />
               ))}
             </div>
           )}
@@ -95,6 +125,12 @@ export default function Dashboard() {
             </p>
           )}
         </main>
+
+        <CreateTaskModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onTaskCreated={handleTaskCreated}
+        />
       </div>
     </div>
   );
