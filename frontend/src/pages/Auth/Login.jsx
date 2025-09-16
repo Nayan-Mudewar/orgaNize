@@ -79,7 +79,7 @@ export default function Login() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="mt-1 block w-full border rounded px-3 py-2"
-            placeholder="yourusername"
+            placeholder="username"
             required
             autoComplete="username"
           />
