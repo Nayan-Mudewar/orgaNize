@@ -21,7 +21,6 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    // Basic client-side validation
     if (!name.trim() || !password.trim()) {
       setError("Please enter both username and password.");
       return;
@@ -29,9 +28,8 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post("/auth/login", {name, password });
+      const res = await axios.post("/auth/login", { name, password });
 
-      // Support common response shapes
       const data = res.data || {};
       const receivedToken =
         data.token || data.accessToken || data.data?.token || null;
@@ -43,14 +41,11 @@ export default function Login() {
         return;
       }
 
-      // Save token & user into global auth (AuthContext handles localStorage + axios header)
       setToken(receivedToken);
       if (receivedUser) setUser(receivedUser);
 
-      // Redirect to dashboard
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      // Read server message if available, otherwise fallback
       const message =
         err.response?.data?.message ||
         err.response?.data?.error ||
@@ -67,17 +62,11 @@ export default function Login() {
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm"
-        aria-labelledby="login-heading"
       >
-        <h2 id="login-heading" className="text-2xl font-semibold mb-4">
-          Login
-        </h2>
+        <h2 className="text-2xl font-semibold mb-4">Login</h2>
 
         {error && (
-          <div
-            role="alert"
-            className="mb-3 text-sm text-red-700 bg-red-100 p-2 rounded"
-          >
+          <div className="mb-3 text-sm text-red-700 bg-red-100 p-2 rounded">
             {error}
           </div>
         )}
@@ -85,7 +74,7 @@ export default function Login() {
         <label className="block mb-2 text-sm">
           <span className="text-gray-600">Username</span>
           <input
-            type="username"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="mt-1 block w-full border rounded px-3 py-2"
