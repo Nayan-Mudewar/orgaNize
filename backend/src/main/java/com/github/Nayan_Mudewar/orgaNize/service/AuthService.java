@@ -2,6 +2,7 @@ package com.github.Nayan_Mudewar.orgaNize.service;
 
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.dto.*;
+import com.github.Nayan_Mudewar.orgaNize.exception.UserNotFoundException;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import com.github.Nayan_Mudewar.orgaNize.security.AuthUtil;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class AuthService {
 
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             User user = userRepository.findByName(userDetails.getUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
 
             String token = authUtil.generateToken(user);
 
@@ -58,7 +59,7 @@ public class AuthService {
                     .user(new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
                     .build();
         } catch (BadCredentialsException ex) {
-            throw new RuntimeException("Invalid username or password");
+            throw new BadCredentialsException("Invalid username or password");
         }
     }
 }

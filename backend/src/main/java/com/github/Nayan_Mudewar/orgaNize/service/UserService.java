@@ -28,6 +28,9 @@ public class UserService {
         if (userrepository.existsByEmail(dto.getEmail())) {
             throw new IllegalStateException("Email already in use");
         }
+        if (userrepository.existsByName(dto.getName())) {
+            throw new IllegalStateException("Username already exists");
+        }
 
         User user = new User();
         user.setEmail(dto.getEmail());

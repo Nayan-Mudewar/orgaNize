@@ -5,6 +5,8 @@ import com.github.Nayan_Mudewar.orgaNize.Entity.User;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
+import com.github.Nayan_Mudewar.orgaNize.exception.TaskNotFoundException;
+import com.github.Nayan_Mudewar.orgaNize.exception.UserNotFoundException;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
@@ -35,7 +37,7 @@ public class TaskService {
         User assignedTo = null;
         if (request.getAssignedToName() != null) {
             assignedTo = userRepository.findByName(request.getAssignedToName())
-                    .orElseThrow(() -> new RuntimeException("Assigned user not found: " + request.getAssignedToName()));
+                    .orElseThrow(() -> new UserNotFoundException("Assigned user not found: " + request.getAssignedToName()));
         }
 
         Task task = Task.builder()
@@ -66,7 +68,7 @@ public class TaskService {
 
     public TaskResponseDto getTaskById(Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
         return mapToResponseDTO(task);
     }
 
@@ -78,7 +80,7 @@ public class TaskService {
         return true;
     }
 
-    public TaskResponseDto updateTask(Long id, TaskRequestDto request) {
+    public TaskResponseDto  updateTask(Long id, TaskRequestDto request) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isEmpty()) return null;
 
@@ -89,7 +91,7 @@ public class TaskService {
         if (request.getDescription() != null) present.setDescription(request.getDescription());
         if (getCurrentUsername()!= null) {
             User user = userRepository.findByName(getCurrentUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found: " + getCurrentUsername()));
+                    .orElseThrow(() -> new UserNotFoundException("User not found: " + getCurrentUsername()));
             present.setCreatedBy(user);
         }
 
@@ -99,10 +101,10 @@ public class TaskService {
 
     public TaskResponseDto assignTask(Long id, TaskAssignedtoDto dto) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
 
         User user = userRepository.findById(dto.getAssignedToId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getAssignedToId()));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + dto.getAssignedToId()));
 
         task.setAssignedTo(user);
         Task updated = taskRepository.save(task);
@@ -111,7 +113,7 @@ public class TaskService {
 
     public List<TaskResponseDto> TaskAssignTo(String name) {
         User user = userRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("User not found with name: " + name));
+                .orElseThrow(() -> new UserNotFoundException("User not found with name: " + name));
 
         List<Task> tasks = taskRepository.findByAssignedTo(user);
         List<TaskResponseDto> response = new ArrayList<>();
