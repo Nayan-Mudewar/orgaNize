@@ -26,6 +26,9 @@ public class AuthService {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalStateException("Email already in use");
         }
+        if (userRepository.existsByName(dto.getName())) {
+            throw new IllegalStateException("Username already in use");
+        }
 
         User user = User.builder()
                 .name(dto.getName())

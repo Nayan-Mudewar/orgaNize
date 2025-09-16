@@ -10,6 +10,8 @@ import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,8 +29,8 @@ public class TaskService {
     private UserRepository userRepository;
 
     public TaskResponseDto createTask(TaskRequestDto request) {
-        User createdBy = userRepository.findByName(request.getCreatedByName())
-                .orElseThrow(() -> new RuntimeException("Creator not found: " + request.getCreatedByName()));
+        User createdBy = userRepository.findByName(getCurrentUsername())
+                .orElseThrow(() -> new RuntimeException("Creator not found: " + getCurrentUsername()));
 
         User assignedTo = null;
         if (request.getAssignedToName() != null) {
@@ -50,12 +52,17 @@ public class TaskService {
     }
 
     public List<TaskResponseDto> getAllTasks() {
-        return taskRepository.findAll()
+        String currentUsername = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        System.out.println(currentUsername);
+
+        return taskRepository.findByCreatedBy_NameOrAssignedTo_Name(currentUsername, currentUsername)
                 .stream()
-                .filter(Objects::nonNull)
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+
 
     public TaskResponseDto getTaskById(Long id) {
         Task task = taskRepository.findById(id)
@@ -80,9 +87,9 @@ public class TaskService {
         if (request.getTitle() != null) present.setTitle(request.getTitle());
         if (request.getStatus() != null) present.setStatus(request.getStatus());
         if (request.getDescription() != null) present.setDescription(request.getDescription());
-        if (request.getCreatedByName() != null) {
-            User user = userRepository.findByName(request.getCreatedByName())
-                    .orElseThrow(() -> new RuntimeException("User not found: " + request.getCreatedByName()));
+        if (getCurrentUsername()!= null) {
+            User user = userRepository.findByName(getCurrentUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found: " + getCurrentUsername()));
             present.setCreatedBy(user);
         }
 
@@ -139,5 +146,10 @@ public class TaskService {
 
     private UserResponseDto mapToUserResponseDto(User user) {
         return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
+    }
+
+    private String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }

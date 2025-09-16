@@ -17,8 +17,6 @@ public class TaskRequestDto {
     private String description;
     private Status status;
     private LocalDateTime dueDate;
-    private String createdByName;
-
     private String assignedToName;
 }
 

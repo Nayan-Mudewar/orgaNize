@@ -20,4 +20,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> getByStatus(Status status);
 
     List<Task> getByStatusAndAssignedTo_Name(Status status, String name);
+    List<Task> findByCreatedBy_NameOrAssignedTo_Name(String createdByName, String assignedToName);
 }

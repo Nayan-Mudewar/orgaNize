@@ -23,8 +23,8 @@ public class TaskController {
     @PostMapping
     @LogActivity(actionType = "CREATE", details = "Created a task")
     public ResponseEntity<?> createTask(@RequestBody(required = false) TaskRequestDto request) {
-        if (request == null || request.getTitle() == null || request.getCreatedByName() == null) {
-            return ResponseEntity.badRequest().body("Title and createdByName are required");
+        if (request == null || request.getTitle() == null) {
+            return ResponseEntity.badRequest().body("Title is required");
         }
         try {
             TaskResponseDto dto = taskService.createTask(request);
