@@ -7,7 +7,7 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
         title: '',
         description: '',
         dueDate: '',
-        assignedTo: '',
+        assignedToName: '',
         status: 'TODO'
     });
     const [error, setError] = useState('');
@@ -38,7 +38,7 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                 title: '',
                 description: '',
                 dueDate: '',
-                assignedTo: '',
+                assignedToName: '',
                 status: 'TODO'
             });
         } catch (err) {
@@ -93,11 +93,11 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                     <div>
                         <label className="block text-sm font-medium mb-1">Assigned To</label>
                         <input
-                            type="email"
-                            value={formData.assignedTo}
-                            onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
+                            type="assignedToName"
+                            value={formData.assignedToName}
+                            onChange={(e) => setFormData({ ...formData, assignedToName: e.target.value })}
                             className="w-full border rounded px-3 py-2"
-                            placeholder="Email address"
+                            placeholder="UserName"
                         />
                     </div>
 

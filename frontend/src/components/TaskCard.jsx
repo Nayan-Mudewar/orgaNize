@@ -6,6 +6,7 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated }) {
   const { token } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
+    id: task.id, // Add this line
     title: task.title,
     description: task.description,
     status: task.status,
@@ -30,16 +31,18 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated }) {
     try {
       // Format the date to include time (midnight) in ISO format
       const formattedData = {
+        id: task.id, // Add the task ID here
         ...editForm,
         dueDate: editForm.dueDate ? `${editForm.dueDate}T00:00:00` : null
       };
 
-      await axios.put(
+      const response = await axios.put(
         `${import.meta.env.VITE_API_BASE_URL}/api/tasks/${task.id}`,
         formattedData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      onTaskUpdated(task.id, formattedData);
+
+      onTaskUpdated(task.id, response.data);
       setIsEditing(false);
     } catch (err) {
       console.error("Error updating task:", err.response?.data || err.message);
@@ -50,7 +53,10 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated }) {
   return (
     <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition space-y-2">
       {isEditing ? (
-        <div className="space-y-2">
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            handleSave();
+        }} className="space-y-2">
           <input
             type="text"
             value={editForm.title}
@@ -78,14 +84,21 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated }) {
             className="border rounded px-2 py-1 w-full"
           />
           <div className="flex gap-2">
-            <button onClick={handleSave} className="bg-green-500 text-white px-2 py-1 rounded">
-              Save
+            <button 
+                type="submit"
+                className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+            >
+                Update
             </button>
-            <button onClick={() => setIsEditing(false)} className="bg-gray-300 px-2 py-1 rounded">
-              Cancel
+            <button 
+                type="button"
+                onClick={() => setIsEditing(false)} 
+                className="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400"
+            >
+                Cancel
             </button>
           </div>
-        </div>
+        </form>
       ) : (
         <div>
           <h3 className="text-lg font-semibold">{task.title}</h3>

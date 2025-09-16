@@ -5,10 +5,10 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import { useAuth } from "../context/AuthContext";
 import Welcome from "../pages/Welcome";
 import TaskList from "../pages/Tasks/TaskList";
-import CreateTaskModal from "../components/CreateTaskModal";
+
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
-  return token ? children : <Navigate to="/login" replace />;
+  return token ? children : <Navigate to="/" replace />;  // Changed from /login to /
 }
 
 export default function AppRoutes() {
@@ -27,8 +27,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        <Route path="createtasks" element={<ProtectedRoute><CreateTaskModal/></ProtectedRoute>}/>
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

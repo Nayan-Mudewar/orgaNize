@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../../api/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
-
+import Footer from "../../components/Footer";
 export default function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -58,6 +58,7 @@ export default function Login() {
   };
 
   return (
+    <div>
     <div className="flex h-screen items-center justify-center bg-gray-100 p-4">
       <form
         onSubmit={handleSubmit}
@@ -114,6 +115,8 @@ export default function Login() {
           </Link>
         </div>
       </form>
+    </div>
+    <Footer/>
     </div>
   );
 }
