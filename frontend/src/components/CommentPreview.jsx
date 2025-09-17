@@ -1,9 +1,11 @@
 import React from 'react';
 
 export default function CommentPreview({ comments, loading }) {
+  if (!loading && comments.length === 0) return null;
+  
   return (
-    <div className="mt-3">
-      <div className="bg-gray-50/90 backdrop-blur-sm rounded-lg p-2 shadow-sm max-w-full">
+    <div className="relative z-0">
+      <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 max-w-full">
         {loading ? (
           <div className="text-sm text-gray-500">Loading comments...</div>
         ) : (

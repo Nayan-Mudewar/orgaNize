@@ -32,23 +32,64 @@ export default function CommentModal({ taskId, onClose, onCreated }) {
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white rounded-lg shadow p-4 w-full max-w-md">
-        <h3 className="text-lg font-semibold mb-2">Add Comment</h3>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            rows={3}
-            className="w-full border rounded px-3 py-2"
-            placeholder="Write a comment..."
-            required
-          />
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="px-3 py-1 rounded bg-gray-200">Cancel</button>
-            <button type="submit" disabled={loading} className="px-3 py-1 rounded bg-blue-600 text-white">{loading ? 'Posting...' : 'Post'}</button>
+    <div 
+      className="fixed inset-0 z-[9999] overflow-y-auto bg-gray-700/30 backdrop-blur-[2px]" 
+      aria-labelledby="modal-title" 
+      role="dialog" 
+      aria-modal="true"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <div 
+          className="relative w-full max-w-md transform overflow-hidden rounded-xl bg-white/95 shadow-lg ring-1 ring-black/5 transition-all"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="px-6 pt-5 pb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Add Comment
+              </h3>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-500 focus:outline-none"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <textarea
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  rows={4}
+                  className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Write your comment here..."
+                  required
+                />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                >
+                  {loading ? 'Posting...' : 'Post Comment'}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

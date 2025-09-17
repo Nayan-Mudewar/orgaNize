@@ -7,7 +7,7 @@ export default function TaskEditForm({ form, setForm, onCancel, onSubmit }) {
         e.preventDefault();
         onSubmit();
       }}
-      className="space-y-2"
+      className="space-y-4 relative z-20"
     >
       <input
         type="text"
