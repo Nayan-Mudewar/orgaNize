@@ -28,13 +28,8 @@ public class UserController {
         if (dto.getPassword().length() < 6) {
             return ResponseEntity.badRequest().body("Password must be at least 6 characters");
         }
-
-        try {
-            UserResponseDto createdUser = userService.createUser(dto);
+        UserResponseDto createdUser = userService.createUser(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
     }
 
     @GetMapping
@@ -45,7 +40,14 @@ public class UserController {
         }
         return ResponseEntity.ok(users);
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        UserResponseDto dto = userService.getUserById(id);
+        if (dto==null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(dto);
+    }
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         boolean deleted = userService.deleteById(id);

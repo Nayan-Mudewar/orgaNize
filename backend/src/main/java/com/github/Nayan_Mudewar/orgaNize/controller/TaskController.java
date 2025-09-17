@@ -26,12 +26,8 @@ public class TaskController {
         if (request == null || request.getTitle() == null) {
             return ResponseEntity.badRequest().body("Title is required");
         }
-        try {
             TaskResponseDto dto = taskService.createTask(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(dto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @GetMapping
@@ -45,18 +41,14 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable Long id) {
-        try {
             return ResponseEntity.ok(taskService.getTaskById(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @DeleteMapping("/{id}")
     @LogActivity(actionType = "DELETE", details = "Deleted a task")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         boolean deleted = taskService.deleteTask(id);
-        if (!deleted) {
+        if (!deleted){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
         }
         return ResponseEntity.noContent().build();
@@ -78,20 +70,12 @@ public class TaskController {
     @PutMapping("/assign/{id}")
     @LogActivity(actionType = "ASSIGN TASK", details = "Assign task")
     public ResponseEntity<?> assignTask(@PathVariable Long id, @RequestBody TaskAssignedtoDto dto) {
-        try {
-            return ResponseEntity.ok(taskService.assignTask(id, dto));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return ResponseEntity.ok(taskService.assignTask(id, dto));
     }
 
     @GetMapping("/AssignTasks/{name}")
     public ResponseEntity<?> getAssignedTaskList(@PathVariable String name) {
-        try {
-            return ResponseEntity.ok(taskService.TaskAssignTo(name));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return ResponseEntity.ok(taskService.TaskAssignTo(name));
     }
 
     @GetMapping("/filter")

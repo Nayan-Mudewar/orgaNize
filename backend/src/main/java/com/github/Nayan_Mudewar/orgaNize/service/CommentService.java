@@ -12,6 +12,7 @@ import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CommentService {
                 .task(task)
                 .user(user)
                 .text(request.getText())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         Comment saved = commentRepository.save(comment);

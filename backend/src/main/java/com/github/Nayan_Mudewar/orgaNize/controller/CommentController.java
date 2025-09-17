@@ -18,11 +18,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) {
         return ResponseEntity.ok(commentService.createComment(request));
     }
-    @GetMapping
-    public ResponseEntity<List<CommentResponseDto>> getAllComments() {
-        return ResponseEntity.ok(commentService.getAllComments());
-    }
-    @GetMapping("/task/{taskId}")
+    @GetMapping("/{taskId}")
     public ResponseEntity<List<CommentResponseDto>> getCommentsByTask(@PathVariable Long taskId) {
         return ResponseEntity.ok(commentService.getCommentsByTaskId(taskId));
     }

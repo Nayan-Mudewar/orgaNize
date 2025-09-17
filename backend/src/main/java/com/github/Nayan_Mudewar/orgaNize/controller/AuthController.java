@@ -30,13 +30,8 @@ public class AuthController {
         if (dto.getPassword().length() < 6) {
             return ResponseEntity.badRequest().body("Password must be at least 6 characters");
         }
-
-        try {
-            UserResponseDto response = authService.register(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        UserResponseDto response = authService.register(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
@@ -45,12 +40,7 @@ public class AuthController {
         if (dto == null || dto.getName() == null || dto.getPassword() == null) {
             return ResponseEntity.badRequest().body("Username and password are required");
         }
-
-        try {
-            LoginResponseDto response = authService.login(dto);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
+        LoginResponseDto response = authService.login(dto);
+        return ResponseEntity.ok(response);
     }
 }

@@ -51,7 +51,7 @@ public class UserService {
         return responseDtos;
     }
 
-    public UserResponseDto getUserByName(Long id) {
+    public UserResponseDto getUserById(Long id) {
         Optional<User> userOptional = userrepository.findById(id);
         return userOptional.map(this::mapToUserResponseDto).orElse(null);
     }
@@ -60,10 +60,17 @@ public class UserService {
         Optional<User> useroptional = userrepository.findById(id);
         if (useroptional.isPresent()) {
             User present = useroptional.get();
-            present.setEmail(dto.getEmail());
-            present.setPassword(passwordEncoder.encode(dto.getPassword()));
-            present.setName(dto.getName());
-            present.setRole(dto.getRole());
+            // Update only the fields provided to avoid overwriting with nulls
+            if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
+                present.setEmail(dto.getEmail());
+            }
+            if (dto.getName() != null && !dto.getName().isBlank()) {
+                present.setName(dto.getName());
+            }
+            // Only update password when provided (avoid NullPointerException)
+            if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+                present.setPassword(passwordEncoder.encode(dto.getPassword()));
+            }
 
             User updated = userrepository.save(present);
             return mapToUserResponseDto(updated);
