@@ -63,6 +63,7 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                             type="text"
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                            maxlength={50}
                             className="w-full border rounded px-3 py-2"
                             required
                         />
@@ -73,6 +74,7 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            maxlength={200}
                             className="w-full border rounded px-3 py-2"
                             rows="3"
                             required
