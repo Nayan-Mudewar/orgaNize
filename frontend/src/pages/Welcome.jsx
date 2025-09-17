@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "./../../public/assets/logo.png";
 import { FiCheckCircle, FiClock, FiUsers } from 'react-icons/fi'; // Install react-icons if not already installed
 import Footer from "../components/Footer";
 export default function Welcome() {
@@ -28,7 +27,7 @@ export default function Welcome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <img src={logo} alt="OrgaNize Logo" className="w-8 h-8" />
+              <img src="/assets/logo.png" alt="OrgaNize Logo" className="w-8 h-8" />
               <span className="text-xl font-bold text-gray-800">
                 Orga<span className="text-blue-600">Nize</span>
               </span>

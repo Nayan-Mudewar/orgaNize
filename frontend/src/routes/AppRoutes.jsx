@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import Welcome from "../pages/Welcome";
 import TaskList from "../pages/Tasks/TaskList";
 import AuthRoute from "./AuthRoute";
+import Profile from '../pages/Profile/Profile';
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
@@ -44,6 +45,14 @@ export default function AppRoutes() {
             <TaskList />
           </ProtectedRoute>
         } />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } 
+        />
 
         {/* Fallback route */}
         <Route path="*" element={<Navigate to={token ? "/dashboard" : "/"} replace />} />

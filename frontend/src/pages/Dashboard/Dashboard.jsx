@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import TaskCard from "../../components/TaskCard";
 import CreateTaskModal from "../../components/CreateTaskModal";
+import Profile from "../Profile/Profile";
 
 export default function Dashboard() {
   const { logout, token } = useAuth();
@@ -12,6 +13,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -60,16 +62,17 @@ export default function Dashboard() {
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 text-white p-4">
         <h2 className="text-2xl font-bold mb-6">My App</h2>
+        {/* Update the sidebar nav */}
         <nav className="space-y-4">
-          <a href="#" className="block hover:text-gray-300">
+          <Link to="/dashboard" className="block hover:text-gray-300">
             Dashboard
-          </a>
-          <a href="#" className="block hover:text-gray-300">
+          </Link>
+          <Link to="/profile" className="block hover:text-gray-300">
             Profile
-          </a>
-          <a href="#" className="block hover:text-gray-300">
+          </Link>
+          <Link to="/settings" className="block hover:text-gray-300">
             Settings
-          </a>
+          </Link>
         </nav>
       </aside>
 
@@ -130,6 +133,10 @@ export default function Dashboard() {
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
           onTaskCreated={handleTaskCreated}
+        />
+        <Profile
+          isOpen={isProfileOpen}
+          onClose={() => setIsProfileOpen(false)}
         />
       </div>
     </div>

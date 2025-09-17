@@ -4,7 +4,7 @@ import axios from "../../api/axiosInstance";
 import Navbar from "../../components/Navbar"; // Adjust the import based on your file structure
 
 export default function Register() {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const [form, setForm] = useState({name: "", email: "", password: "" });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -30,8 +30,8 @@ export default function Register() {
           <input
             type="text"
             placeholder="Username"
-            value={form.username}
-            onChange={(e) => setForm({ ...form, username: e.target.value })}
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="border w-full mb-3 p-2 rounded"
           />
           <input

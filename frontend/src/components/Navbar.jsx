@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "./../../public/assets/logo.png";
 
 export default function Navbar({ variant = "default" }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +29,7 @@ export default function Navbar({ variant = "default" }) {
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-2">
                         <Link to="/">
-                            <img src={logo} alt="OrgaNize Logo" className="w-8 h-8" />
+                            <img src="/assets/logo.png" alt="OrgaNize Logo" className="w-8 h-8" />
                         </Link>
                         <span className="text-xl font-bold text-gray-800">
                             Orga<span className="text-blue-600">Nize</span>

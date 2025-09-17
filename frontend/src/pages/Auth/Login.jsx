@@ -30,30 +30,49 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post("/auth/login", { name, password });
+      const response = await axios.post("/auth/login", { 
+        name, 
+        password 
+      });
 
-      const data = res.data || {};
-      const receivedToken =
-        data.token || data.accessToken || data.data?.token || null;
-      const receivedUser = data.user || data.data?.user || null;
-
-      if (!receivedToken) {
-        setError("Login succeeded but token not found in response.");
-        setLoading(false);
-        return;
+      // Check if response has expected structure
+      if (!response.data || response.data.success === false) {
+        throw new Error(response.data?.message || 'Login failed');
       }
 
-      setToken(receivedToken);
-      if (receivedUser) setUser(receivedUser);
+      // Extract token and user data
+      const { token, user } = response.data;
+      
+      if (!token) {
+        throw new Error('No token received from server');
+      }
+
+      // Update auth context
+      setToken(token);
+      if (user) {
+        setUser({
+          id: user.id,
+          name: user.name,
+          email: user.email
+        });
+      }
 
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      const message =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        err.message ||
-        "Login failed";
-      setError(message);
+      // Handle different types of errors
+      if (err.response) {
+        // Server responded with error
+        const errorMessage = err.response.data?.message || 
+                           err.response.data?.error || 
+                           'Invalid username or password';
+        setError(errorMessage);
+      } else if (err.request) {
+        // Request made but no response
+        setError("Unable to connect to server");
+      } else {
+        // Other errors
+        setError(err.message || "An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
