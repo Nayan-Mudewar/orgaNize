@@ -70,11 +70,11 @@ export default function Dashboard() {
             <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              <span>{tasks.filter(t => t.status?.toLowerCase() === 'completed').length} Completed</span>
+              <span>{tasks.filter(t => t.status?.toLowerCase() === 'done').length} Completed</span>
               <span className="w-2 h-2 bg-blue-500 rounded-full ml-3"></span>
               <span>{tasks.filter(t => t.status?.toLowerCase() === 'in progress').length} In Progress</span>
               <span className="w-2 h-2 bg-yellow-500 rounded-full ml-3"></span>
-              <span>{tasks.filter(t => t.status?.toLowerCase() === 'pending').length} Pending</span>
+              <span>{tasks.filter(t => t.status?.toLowerCase() === 'to').length} To do</span>
             </div>
           </div>
           <div className="flex items-center space-x-3">

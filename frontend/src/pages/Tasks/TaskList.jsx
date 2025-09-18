@@ -1,44 +1,55 @@
-import { useState, useEffect } from "react";
-import axios from "../../api/axiosInstance";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 export default function TaskList() {
+  const { token } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchTasks() {
+    const fetchTasks = async () => {
       try {
-        const res = await axios.get("/api/tasks");
-        setTasks(res.data);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/tasks`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setTasks(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
-        setError("Failed to load tasks");
+        console.error(err);
+        setError("Failed to fetch tasks");
       } finally {
         setLoading(false);
       }
-    }
-    fetchTasks();
-  }, []);
+    };
 
-  if (loading) return <p className="p-6">Loading tasks...</p>;
-  if (error) return <p className="p-6 text-red-500">{error}</p>;
+    fetchTasks();
+  }, [token]);
+
+  if (loading) return <p>Loading tasks...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">All Tasks</h1>
-      <ul className="space-y-3">
-        {tasks.map((task) => (
-          <li
-            key={task.id}
-            className="border rounded-lg p-4 hover:shadow-md transition"
-          >
-            <h2 className="font-semibold">{task.title}</h2>
-            <p>Status: {task.status}</p>
-            <p>Assigned to: {task.assignedTo || "Unassigned"}</p>
-            <p>Due: {task.dueDate || "No due date"}</p>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Task List</h1>
+      {tasks.length === 0 ? (
+        <p>No tasks found.</p>
+      ) : (
+        <ul className="space-y-2">
+          {tasks.map((task) => (
+            <li
+              key={task.id}
+              className="p-4 border rounded shadow-sm bg-white"
+            >
+              <h3 className="font-semibold">{task.title}</h3>
+              <p className="text-sm text-gray-600">{task.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
