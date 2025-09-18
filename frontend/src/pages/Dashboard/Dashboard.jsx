@@ -6,9 +6,11 @@ import TaskCard from "../../components/TaskCard";
 import CreateTaskModal from "../../components/CreateTaskModal";
 import Sidebar from "../../components/Sidebar";
 import Profile from "../Profile/Profile";
+import TaskFilter from "../../components/TaskFilter";
+import ActiivityLog from "../../components/ActivityLog";
 
 export default function Dashboard() {
-  const { logout, token } = useAuth();
+  const { logout,user,token } = useAuth();
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,10 +76,17 @@ export default function Dashboard() {
               <span className="w-2 h-2 bg-blue-500 rounded-full ml-3"></span>
               <span>{tasks.filter(t => t.status?.toLowerCase() === 'in progress').length} In Progress</span>
               <span className="w-2 h-2 bg-yellow-500 rounded-full ml-3"></span>
-              <span>{tasks.filter(t => t.status?.toLowerCase() === 'to').length} To do</span>
+              <span>{tasks.filter(t => t.status?.toLowerCase() === 'todo').length} To do</span>
             </div>
           </div>
           <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-3">
+          {/* Filter sits nicely next to Create Task */}
+            <TaskFilter
+                  name={user?.username || user?.name || ""}
+                  onFiltered={(filteredTasks) => setTasks(filteredTasks)}
+            />
+            <ActiivityLog/>
             <button
               onClick={() => setIsCreateModalOpen(true)}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center space-x-2"
@@ -95,6 +104,7 @@ export default function Dashboard() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
             </button>
+            </div>
           </div>
         </header>
 
@@ -149,6 +159,8 @@ export default function Dashboard() {
                 </svg>
                 <h3 className="mt-4 text-lg font-medium text-gray-900">No tasks found</h3>
                 <p className="mt-2 text-gray-500">Get started by creating your first task!</p>
+                 
+
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
                   className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-200"

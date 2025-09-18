@@ -5,7 +5,7 @@ export default function CommentPreview({ comments, loading }) {
 
   if (!loading && comments.length === 0) return null;
 
-  const visibleComments = showAll ? comments : comments.slice(0, 3);
+ // const visibleComments = showAll ? comments : comments.slice(0, 3);
 
   return (
     <div className="relative z-0">
@@ -13,8 +13,8 @@ export default function CommentPreview({ comments, loading }) {
         {loading ? (
           <div className="text-sm text-gray-500">Loading comments...</div>
         ) : (
-          <div className="space-y-2">
-            {visibleComments.map((c) => (
+          <div className="space-y-2 max-h-32 overflow-y-auto">
+            {comments.map((c) => (
               <div key={c.id} className="flex items-start gap-2">
                 <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-semibold">
                   {c.userName?.charAt(0)?.toUpperCase()}
@@ -28,13 +28,13 @@ export default function CommentPreview({ comments, loading }) {
               </div>
             ))}
 
-            {comments.length > 3 && (
+            {/* {comments.length > 3 && (
               <button
                 onClick={()=>setShowAll(!showAll)}
                 className="text-xs text-blue-600 font-medium hover:underline"
               >{showAll?'Hide comments':`View all comments (${comments.length})`}
               </button>
-            )}
+            )} */}
           </div>
         )}
       </div>

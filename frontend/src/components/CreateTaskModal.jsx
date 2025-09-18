@@ -55,6 +55,8 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
             <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto">
                 <h2 className="text-xl font-bold mb-4">Create New Task</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
+                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto shadow-xl">
                 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -132,8 +134,11 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                         >
                             {loading ? 'Creating...' : 'Create Task'}
                         </button>
-                    </div>
+                     </div>
+                    
                 </form>
+                 </div>
+             </div>
             </div>
         </div>
     );

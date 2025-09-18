@@ -48,14 +48,11 @@ export default function Login() {
       }
 
       // Update auth context
-      setToken(token);
-      if (user) {
-        setUser({
-          id: user.id,
-          name: user.name,
-          email: user.email
-        });
-      }
+      login(token, {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      });
 
       navigate("/dashboard", { replace: true });
     } catch (err) {
