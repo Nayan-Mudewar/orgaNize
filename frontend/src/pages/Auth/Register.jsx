@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../api/axiosInstance";
-import Navbar from "../../components/Navbar"; // Adjust the import based on your file structure
+import Navbar from "../../components/Navbar"; 
 
 export default function Register() {
   const [form, setForm] = useState({name: "", email: "", password: "" });
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    if(!form.name.trim()|| !form.email.trim() || !form.password.trim()) {
+      setError("All fields are required");
+      return;
+    }
     try {
       await axios.post("/auth/register", form);
       alert("Registration successful!");
@@ -48,6 +54,11 @@ export default function Register() {
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             className="border w-full mb-3 p-2 rounded"
           />
+          {error && (
+            <div className="mb-3 text-sm text-red-700 bg-red-100 p-2 rounded">
+              {error}
+            </div>
+          )}
           <button className="bg-green-500 text-white w-full py-2 rounded">
             Register
           </button>

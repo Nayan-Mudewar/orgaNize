@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "../../api/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
 import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar"; // Import the Navbar component
+import Navbar from "../../components/Navbar"; 
 
 export default function Login() {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { login, token, setToken, setUser } = useAuth();
+  const { login, token} = useAuth();
   const navigate = useNavigate();
 
   // If user already logged in, redirect to dashboard
