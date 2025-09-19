@@ -17,9 +17,6 @@ export default function Sidebar() {
         <Link to="/profile" className={`block ${isActive('/profile')}`}>
           Profile
         </Link>
-        <Link to="/settings" className={`block ${isActive('/settings')}`}>
-          Settings
-        </Link>
       </nav>
     </aside>
   );

@@ -22,7 +22,7 @@ export default function AppRoutes() {
         {/* Public route */}
         <Route path="/" element={token ? <Navigate to="/dashboard" replace /> : <Welcome />} />
 
-        {/* Auth routes - accessible only when not logged in */}
+     
         <Route path="/login" element={
           <AuthRoute>
             <Login />
@@ -34,7 +34,7 @@ export default function AppRoutes() {
           </AuthRoute>
         } />
 
-        {/* Protected routes - require authentication */}
+        
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
@@ -54,7 +54,7 @@ export default function AppRoutes() {
           } 
         />
 
-        {/* Fallback route */}
+        
         <Route path="*" element={<Navigate to={token ? "/dashboard" : "/"} replace />} />
       </Routes>
     </BrowserRouter>

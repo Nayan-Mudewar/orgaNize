@@ -6,13 +6,13 @@ import { useAuth } from "../context/AuthContext";
 
 export default function ActivityLog() {
   const { token } = useAuth();
-  const [open, setOpen] = useState(false); // dropdown
-  const [modalOpen, setModalOpen] = useState(false); // full modal
+  const [open, setOpen] = useState(false); 
+  const [modalOpen, setModalOpen] = useState(false); 
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const wrapperRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  
   useEffect(() => {
     function onDocClick(e) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -23,7 +23,7 @@ export default function ActivityLog() {
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
-  // Helper to normalise backend responses (array OR Spring Page)
+
   function extractList(payload) {
     if (!payload) return [];
     if (Array.isArray(payload)) return payload;
@@ -31,7 +31,7 @@ export default function ActivityLog() {
     return [];
   }
 
-  // Fetch recent (small list) when dropdown opens
+  
   async function fetchRecent() {
     setLoading(true);
     try {
@@ -51,14 +51,14 @@ export default function ActivityLog() {
     }
   }
 
-  // When dropdown opens -> fetch recent
+  
   useEffect(() => {
     if (open) fetchRecent();
   }, [open]);
 
   
 
-  // UI render
+  
   return (
     <div className="relative" ref={wrapperRef}>
       <button

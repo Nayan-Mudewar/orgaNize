@@ -1,6 +1,6 @@
 import { FiCheckCircle, FiClock, FiUsers } from 'react-icons/fi';
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar"; // ✅ Import Navbar
+import Navbar from "../components/Navbar"; 
 
 export default function Welcome() {
   const features = [

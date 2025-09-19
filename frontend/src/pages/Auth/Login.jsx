@@ -14,10 +14,10 @@ export default function Login() {
   const { login, token} = useAuth();
   const navigate = useNavigate();
 
-  // If user already logged in, redirect to dashboard
+  
   useEffect(() => {
     if (token) navigate("/dashboard", { replace: true });
-  }, [token, navigate]);
+  }, [token,navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +27,7 @@ export default function Login() {
       setError("Please enter both username and password.");
       return;
     }
+    
 
     setLoading(true);
     try {
@@ -35,7 +36,7 @@ export default function Login() {
         password 
       });
 
-      // Check if response has expected structure
+      
       if (!response.data || response.data.success === false) {
         throw new Error(response.data?.message || 'Login failed');
       }
@@ -56,18 +57,18 @@ export default function Login() {
 
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      // Handle different types of errors
+     
       if (err.response) {
-        // Server responded with error
+        
         const errorMessage = err.response.data?.message || 
                            err.response.data?.error || 
                            'Invalid username or password';
         setError(errorMessage);
       } else if (err.request) {
-        // Request made but no response
+        
         setError("Unable to connect to server");
       } else {
-        // Other errors
+       
         setError(err.message || "An unexpected error occurred");
       }
     } finally {

@@ -11,7 +11,7 @@ export default function useProfile(visible) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Sync edit form when profile changes
+  
   useEffect(() => {
     if (profile) {
       setEditForm({ name: profile.name || '', email: profile.email || '' });

@@ -7,14 +7,19 @@ export default function Register() {
   const [form, setForm] = useState({name: "", email: "", password: "" });
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  
+  const validateForm = () => {
+  if(!form.name.trim()|| !form.email.trim() || !form.password.trim()) {
+    setError("All fields are required");
+    return false;
+  }
+  return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if(!form.name.trim()|| !form.email.trim() || !form.password.trim()) {
-      setError("All fields are required");
-      return;
-    }
+    if(!validateForm())return;
     try {
       await axios.post("/auth/register", form);
       alert("Registration successful!");

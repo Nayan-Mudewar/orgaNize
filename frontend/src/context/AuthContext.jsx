@@ -4,12 +4,10 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => {
-    // Get token from localStorage on initial load
     return localStorage.getItem('token');
   });
 
   const [user, setUser] = useState(() => {
-    // Try to get user from localStorage on initial load
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });

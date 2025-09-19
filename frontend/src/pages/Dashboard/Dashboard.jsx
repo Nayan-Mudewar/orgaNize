@@ -74,14 +74,14 @@ export default function Dashboard() {
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>
               <span>{tasks.filter(t => t.status?.toLowerCase() === 'done').length} Completed</span>
               <span className="w-2 h-2 bg-blue-500 rounded-full ml-3"></span>
-              <span>{tasks.filter(t => t.status?.toLowerCase() === 'in progress').length} In Progress</span>
+              <span>{tasks.filter(t => t.status?.toLowerCase() === 'in_progress').length} In Progress</span>
               <span className="w-2 h-2 bg-yellow-500 rounded-full ml-3"></span>
               <span>{tasks.filter(t => t.status?.toLowerCase() === 'todo').length} To do</span>
             </div>
           </div>
           <div className="flex items-center space-x-3">
             <div className="flex items-center gap-3">
-          {/* Filter sits nicely next to Create Task */}
+        
             <TaskFilter
                   name={user?.username || user?.name || ""}
                   onFiltered={(filteredTasks) => setTasks(filteredTasks)}
@@ -114,7 +114,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-800">Your Tasks</h2>
               <div className="flex items-center space-x-4">
-                {/* Add filters or other controls here if needed */}
+                
               </div>
             </div>
 

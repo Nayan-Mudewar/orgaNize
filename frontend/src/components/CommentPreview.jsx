@@ -28,13 +28,7 @@ export default function CommentPreview({ comments, loading }) {
               </div>
             ))}
 
-            {/* {comments.length > 3 && (
-              <button
-                onClick={()=>setShowAll(!showAll)}
-                className="text-xs text-blue-600 font-medium hover:underline"
-              >{showAll?'Hide comments':`View all comments (${comments.length})`}
-              </button>
-            )} */}
+            
           </div>
         )}
       </div>

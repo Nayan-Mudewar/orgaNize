@@ -10,12 +10,11 @@ export default function TaskFilter({ name = "", onFiltered }) {
   const wrapperRef = useRef(null);
   const { token } = useAuth(); // get JWT token from your auth context
 
-  // Map UI labels to backend enum values.
-  // Adjust the RHS values if your backend expects a different enum name.
+
   const STATUS_MAP = {
     "All": null,
     "To do": "TODO",
-    "In Progress": "IN PROGRESS",
+    "In Progress": "IN_PROGRESS",
     "Completed": "DONE",
   };
 
@@ -38,7 +37,7 @@ export default function TaskFilter({ name = "", onFiltered }) {
     try {
       const params = {};
       if (statusValue) params.status = statusValue;
-      // always send name param if provided by parent (controller expects it)
+      
       if (name) params.name = name;
 
       const res = await axios.get(
@@ -49,15 +48,15 @@ export default function TaskFilter({ name = "", onFiltered }) {
         }
       );
 
-      // If backend returns tasks array, forward it to parent
+      
       if (onFiltered) onFiltered(res.data);
     } catch (err) {
-      // If backend returns 204 (no content), treat as empty
+     
       if (err.response && err.response.status === 204) {
         if (onFiltered) onFiltered([]);
       } else {
         console.error("Task filter error:", err);
-        // Optionally: show toast/notification here
+        
       }
     } finally {
       setLoading(false);
@@ -91,7 +90,7 @@ export default function TaskFilter({ name = "", onFiltered }) {
             ))}
           </ul>
 
-          {/* simple loading row */}
+          
           {loading && (
             <div className="px-3 py-2 text-sm text-gray-500">Loading…</div>
           )}
