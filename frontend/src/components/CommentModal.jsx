@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,12 +10,14 @@ export default function CommentModal({ taskId, onClose, onCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user?.id) return alert('You must be logged in to comment');
+    const userId = user?.id ?? user?.userId ?? user?.userid ?? user?.profileId;
+    if (!userId) return alert('You must be logged in to comment');
     if (!token) return alert('Authentication token missing. Please login again.');
+    if (!taskId) return alert('Task is not available. Please reopen the task.');
     if (!text.trim()) return;
     setLoading(true);
     try {
-      const payload = { userid: user.id, taskid: taskId, text: text.trim() };
+      const payload = { userId, taskId, text: text.trim() };
       const authHeader = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
       const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/comments`, payload, {
         headers: { Authorization: authHeader }
@@ -31,7 +34,7 @@ export default function CommentModal({ taskId, onClose, onCreated }) {
     }
   };
 
-  return (
+  const modal = (
     <div 
       className="fixed inset-0 z-[9999] overflow-y-auto bg-gray-700/30 backdrop-blur-[2px]" 
       aria-labelledby="modal-title" 
@@ -93,4 +96,6 @@ export default function CommentModal({ taskId, onClose, onCreated }) {
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modal, document.body);
 }

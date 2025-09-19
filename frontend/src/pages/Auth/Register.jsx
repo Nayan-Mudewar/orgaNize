@@ -25,7 +25,19 @@ export default function Register() {
       alert("Registration successful!");
       navigate("/login");
     } catch (err) {
-      alert("Registration failed");
+      const data = err?.response?.data;
+      // Prefer explicit server validation messages
+      if (typeof data === 'string') {
+        setError(data);
+      } else if (data?.message) {
+        setError(data.message);
+      } else if (data?.errors && typeof data.errors === 'object') {
+        // Flatten field errors if provided
+        const messages = Object.values(data.errors).filter(Boolean).join(" \n ");
+        setError(messages || "Registration failed");
+      } else {
+        setError("Registration failed");
+      }
     }
   };
 
@@ -60,7 +72,7 @@ export default function Register() {
             className="border w-full mb-3 p-2 rounded"
           />
           {error && (
-            <div className="mb-3 text-sm text-red-700 bg-red-100 p-2 rounded">
+            <div className="mb-3 text-sm text-red-700 bg-red-100 p-2 rounded whitespace-pre-line">
               {error}
             </div>
           )}

@@ -11,12 +11,14 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
         status: 'TODO'
     });
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const { token } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setFieldErrors({});
 
         try {
             setLoading(true);
@@ -30,10 +32,8 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            
             onTaskCreated(response.data);
             onClose();
-            // Reset form
             setFormData({
                 title: '',
                 description: '',
@@ -42,7 +42,30 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                 status: 'TODO'
             });
         } catch (err) {
-            setError(err.response?.data?.message || 'Failed to create task');
+            const status = err?.response?.status;
+            const data = err?.response?.data;
+            const message = typeof data === 'string' ? data : data?.message || 'Failed to create task';
+
+            // Specific inline error if backend indicates user not found
+            if (status === 404 && /user\s+not\s+found/i.test(message)) {
+                setFieldErrors(prev => ({ ...prev, assignedToName: 'Assigned user not found. Please check the username.' }));
+                setError('');
+            } else if (status === 400) {
+                // Possible validation error – try to surface details
+                if (typeof data === 'object' && data) {
+                    // If backend sent a map of field errors
+                    if (data.errors && typeof data.errors === 'object') {
+                        setFieldErrors(data.errors);
+                        setError('Please fix the highlighted fields.');
+                    } else {
+                        setError(message);
+                    }
+                } else {
+                    setError(message);
+                }
+            } else {
+                setError(message);
+            }
         } finally {
             setLoading(false);
         }
@@ -51,13 +74,10 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-zinc-100 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-blur-sm">
+            <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto shadow-xl">
                 <h2 className="text-xl font-bold mb-4">Create New Task</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
-                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-blur-sm">
-                  <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto shadow-xl">
-                
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium mb-1">Title</label>
@@ -84,7 +104,6 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Due Date</label>
                         <input
                             type="date"
                             value={formData.dueDate}
@@ -100,9 +119,12 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                             type="assignedToName"
                             value={formData.assignedToName}
                             onChange={(e) => setFormData({ ...formData, assignedToName: e.target.value })}
-                            className="w-full border rounded px-3 py-2"
+                            className={`w-full border rounded px-3 py-2 ${fieldErrors.assignedToName ? 'border-red-500' : ''}`}
                             placeholder="UserName"
                         />
+                        {fieldErrors.assignedToName && (
+                            <p className="text-xs text-red-600 mt-1">{fieldErrors.assignedToName}</p>
+                        )}
                     </div>
 
                     <div>
@@ -134,11 +156,8 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
                         >
                             {loading ? 'Creating...' : 'Create Task'}
                         </button>
-                     </div>
-                    
+                    </div>
                 </form>
-                 </div>
-             </div>
             </div>
         </div>
     );
