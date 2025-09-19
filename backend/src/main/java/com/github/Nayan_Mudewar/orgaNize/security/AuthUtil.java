@@ -19,7 +19,7 @@ public class AuthUtil {
 
     private SecretKey key; // Single key instance
 
-    private final long jwtExpirationMs = 1000 * 60 * 10; // 10 minutes
+    private final long jwtExpirationMs = 1000 * 60 * 10;
 
     @PostConstruct
     public void init() {
@@ -47,12 +47,12 @@ public class AuthUtil {
                 .getSubject();
     }
 
-    // Validate token
+
     public boolean validateToken(String token, org.springframework.security.core.userdetails.UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername()) && !isExpired(token);
     }
 
-    // Check if token expired
+
     private boolean isExpired(String token) {
         Date expiration = Jwts.parserBuilder()
                 .setSigningKey(key) // same key

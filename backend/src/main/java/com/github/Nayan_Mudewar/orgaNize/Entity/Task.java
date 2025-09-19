@@ -1,8 +1,12 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -39,11 +43,14 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
+    @JsonIgnoreProperties({"createdTasks","assignTasks"})
     private User createdBy;
 
     @ManyToOne
     @JoinColumn(name = "assigned_to")
+    @JsonIgnoreProperties({"createdTasks","assignTasks"})
     private User assignedTo;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -51,9 +58,9 @@ public class Task {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
+   // @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  //  @JsonIgnoreProperties("task")
+  //  private List<Comment> comments = new ArrayList<>();
 
 
 }

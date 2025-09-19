@@ -7,8 +7,8 @@ import com.github.Nayan_Mudewar.orgaNize.dto.UserRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

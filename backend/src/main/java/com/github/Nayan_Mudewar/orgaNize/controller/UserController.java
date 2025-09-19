@@ -29,7 +29,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("Password must be at least 6 characters");
         }
         UserResponseDto createdUser = userService.createUser(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping
@@ -40,14 +40,16 @@ public class UserController {
         }
         return ResponseEntity.ok(users);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         UserResponseDto dto = userService.getUserById(id);
-        if (dto==null) {
+        if (dto == null) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(dto);
     }
+
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         boolean deleted = userService.deleteById(id);

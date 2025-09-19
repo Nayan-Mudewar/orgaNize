@@ -2,23 +2,24 @@ package com.github.Nayan_Mudewar.orgaNize.service;
 
 import com.github.Nayan_Mudewar.orgaNize.Entity.Task;
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
+import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
-import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
+import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.exception.TaskNotFoundException;
 import com.github.Nayan_Mudewar.orgaNize.exception.UserNotFoundException;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
-import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,16 @@ public class TaskService {
         if (request.getAssignedToName() != null) {
             assignedTo = userRepository.findByName(request.getAssignedToName())
                     .orElseThrow(() -> new UserNotFoundException("Assigned user not found: " + request.getAssignedToName()));
+        }
+
+        if (request.getDueDate().isBefore(LocalDateTime.now())) {
+            throw new BadCredentialsException("Invalid Due Date");
+        }
+        if (request.getTitle().trim() == "") {
+            throw new BadCredentialsException("Please Fill Title field");
+        }
+        if (request.getDescription().trim() == "") {
+            throw new BadCredentialsException("Please Fill Title field");
         }
 
         Task task = Task.builder()
@@ -80,16 +91,24 @@ public class TaskService {
         return true;
     }
 
-    public TaskResponseDto  updateTask(Long id, TaskRequestDto request) {
+    public TaskResponseDto updateTask(Long id, TaskRequestDto request) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isEmpty()) return null;
-
+        if (request.getDueDate().isBefore(LocalDateTime.now())) {
+            throw new BadCredentialsException("Invalid Due Date");
+        }
+        if (request.getTitle().trim() == "") {
+            throw new BadCredentialsException("Please Fill Title field");
+        }
+        if (request.getDescription().trim() == "") {
+            throw new BadCredentialsException("Please Fill Title field");
+        }
         Task present = optionalTask.get();
         if (request.getDueDate() != null) present.setDueDate(request.getDueDate());
         if (request.getTitle() != null) present.setTitle(request.getTitle());
         if (request.getStatus() != null) present.setStatus(request.getStatus());
         if (request.getDescription() != null) present.setDescription(request.getDescription());
-        if (getCurrentUsername()!= null) {
+        if (getCurrentUsername() != null) {
             User user = userRepository.findByName(getCurrentUsername())
                     .orElseThrow(() -> new UserNotFoundException("User not found: " + getCurrentUsername()));
             present.setCreatedBy(user);
@@ -132,7 +151,14 @@ public class TaskService {
         return response;
     }
 
+    public List<TaskResponseDto> getTasksByAssignedToName(String name) {
+        List<Task> taskList = taskRepository.findByAssignedTo_Name(name);
+        return taskList.stream().map(this::mapToResponseDTO).toList();
+    }
+
+
     private TaskResponseDto mapToResponseDTO(Task task) {
+
         return TaskResponseDto.builder()
                 .id(task.getId())
                 .title(task.getTitle())

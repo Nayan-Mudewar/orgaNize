@@ -1,11 +1,12 @@
 package com.github.Nayan_Mudewar.orgaNize.Entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "activity_log")

@@ -1,7 +1,6 @@
 package com.github.Nayan_Mudewar.orgaNize.dto;
 
-
-import com.github.Nayan_Mudewar.orgaNize.Entity.User;
+import com.github.Nayan_Mudewar.orgaNize.Entity.Comment;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-
+import java.util.List;
 
 @Data
 @Builder
@@ -26,5 +24,7 @@ public class TaskResponseDto {
     private UserResponseDto assignedTo;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    //@Deprecated
+   // private List<Comment> commentsList;
 }
 

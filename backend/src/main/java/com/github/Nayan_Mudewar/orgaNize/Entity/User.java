@@ -14,33 +14,31 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.Nayan_Mudewar.orgaNize.util.enums.Role.USER;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
     @NotBlank
     @Size(min = 2, max = 100)
-    @Column(name="name", unique = true, nullable = false, length = 100)
+    @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
 
     @NotBlank
     @Size(max = 100)
-    @Column(name="email", unique = true, nullable = false, length = 100)
+    @Column(name = "email", unique = true, nullable = false, length = 100)
     private String email;
 
     @NotBlank
     @Size(min = 6, max = 100)
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
     private Role role;
@@ -50,10 +48,10 @@ public class User {
 
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
-    List<Task> createdTasks=new ArrayList<>();
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Task> createdTasks = new ArrayList<>();
 
-    @OneToMany(mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
-    List<Task> assignTasks=new ArrayList<>();
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Task> assignTasks = new ArrayList<>();
 
 }

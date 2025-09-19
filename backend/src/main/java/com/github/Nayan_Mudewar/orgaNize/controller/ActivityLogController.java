@@ -1,7 +1,6 @@
 package com.github.Nayan_Mudewar.orgaNize.controller;
 
 import com.github.Nayan_Mudewar.orgaNize.Entity.ActivityLog;
-import com.github.Nayan_Mudewar.orgaNize.dto.ActivityLogResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.ActivityLogRepository;
 import com.github.Nayan_Mudewar.orgaNize.security.CustomUserDetails;
 import com.github.Nayan_Mudewar.orgaNize.service.ActivityLogService;
@@ -21,10 +20,12 @@ public class ActivityLogController {
     private ActivityLogService activityLogService;
     @Autowired
     private ActivityLogRepository activityLogRepository;
+
     @GetMapping
     public ResponseEntity<List<ActivityLog>> getActivityLogs() {
         return ResponseEntity.ok(activityLogRepository.findAll());
     }
+
     @GetMapping("/me")
     public ResponseEntity<List<ActivityLog>> getMyActivityLog(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

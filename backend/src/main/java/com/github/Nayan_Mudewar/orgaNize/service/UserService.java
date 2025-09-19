@@ -1,15 +1,15 @@
 package com.github.Nayan_Mudewar.orgaNize.service;
 
 import com.github.Nayan_Mudewar.orgaNize.Entity.User;
-import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.UserRequestDto;
+import com.github.Nayan_Mudewar.orgaNize.dto.UserResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service

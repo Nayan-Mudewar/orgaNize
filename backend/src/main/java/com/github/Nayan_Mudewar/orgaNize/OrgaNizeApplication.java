@@ -1,6 +1,5 @@
 package com.github.Nayan_Mudewar.orgaNize;
 
-import com.github.Nayan_Mudewar.orgaNize.Entity.Comment;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

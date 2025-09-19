@@ -8,7 +8,6 @@ import com.github.Nayan_Mudewar.orgaNize.dto.CommentResponseDto;
 import com.github.Nayan_Mudewar.orgaNize.repository.CommentRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.TaskRepository;
 import com.github.Nayan_Mudewar.orgaNize.repository.UserRepository;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +29,10 @@ public class CommentService {
 
     // CREATE comment
     public CommentResponseDto createComment(CommentRequestDto request) {
-        Task task = taskRepository.findById(request.getTaskid())
+        Task task = taskRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
-        User user = userRepository.findById(request.getUserid())
+        User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Comment comment = Comment.builder()

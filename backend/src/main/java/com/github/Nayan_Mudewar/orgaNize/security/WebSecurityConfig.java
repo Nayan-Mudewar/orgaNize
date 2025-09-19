@@ -1,6 +1,5 @@
 package com.github.Nayan_Mudewar.orgaNize.security;
 
-import com.github.Nayan_Mudewar.orgaNize.security.JwtAuthenticationFilter;
 import com.github.Nayan_Mudewar.orgaNize.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -42,10 +41,10 @@ public class WebSecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/users").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/api/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/api/users/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -65,7 +64,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
@@ -81,7 +80,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        AuthenticationManager manager=config.getAuthenticationManager();
+        AuthenticationManager manager = config.getAuthenticationManager();
         ((ProviderManager) manager).getProviders().add(authenticationProvider());
         return manager;
     }

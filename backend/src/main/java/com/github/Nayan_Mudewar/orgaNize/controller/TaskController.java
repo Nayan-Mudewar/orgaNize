@@ -1,9 +1,9 @@
 package com.github.Nayan_Mudewar.orgaNize.controller;
 
 import com.github.Nayan_Mudewar.orgaNize.annotation.LogActivity;
+import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskRequestDto;
 import com.github.Nayan_Mudewar.orgaNize.dto.TaskResponseDto;
-import com.github.Nayan_Mudewar.orgaNize.dto.TaskAssignedtoDto;
 import com.github.Nayan_Mudewar.orgaNize.service.TaskService;
 import com.github.Nayan_Mudewar.orgaNize.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ public class TaskController {
         if (request == null || request.getTitle() == null) {
             return ResponseEntity.badRequest().body("Title is required");
         }
-            TaskResponseDto dto = taskService.createTask(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        TaskResponseDto dto = taskService.createTask(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @GetMapping
@@ -41,14 +41,14 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable Long id) {
-            return ResponseEntity.ok(taskService.getTaskById(id));
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @DeleteMapping("/{id}")
     @LogActivity(actionType = "DELETE", details = "Deleted a task")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         boolean deleted = taskService.deleteTask(id);
-        if (!deleted){
+        if (!deleted) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
         }
         return ResponseEntity.noContent().build();
@@ -79,11 +79,17 @@ public class TaskController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<?> getAssignedTasks(@RequestParam Status status, @RequestParam String name) {
-        List<TaskResponseDto> dto = taskService.filterByStatusAndName(status, name);
+    public ResponseEntity<?> getAssignedTasks(@RequestParam(required = false) Status status, @RequestParam String name) {
+        List<TaskResponseDto> dto;
+        if (status != null) {
+            dto = taskService.filterByStatusAndName(status, name);
+        } else {
+            dto = taskService.getTasksByAssignedToName(name); // <- create this method in service
+        }
         if (dto.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(dto);
     }
+
 }

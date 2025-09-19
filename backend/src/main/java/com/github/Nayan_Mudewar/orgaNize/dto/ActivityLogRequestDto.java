@@ -1,6 +1,9 @@
 package com.github.Nayan_Mudewar.orgaNize.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -10,9 +13,9 @@ import java.time.LocalDateTime;
 @Builder
 public class ActivityLogRequestDto {
     private Long userId;
-    private String actionType;
     private Long taskId;
-    private LocalDateTime timestamp;
+    private String actionType;
     private String details;
+    private LocalDateTime timestamp;
 }
 
