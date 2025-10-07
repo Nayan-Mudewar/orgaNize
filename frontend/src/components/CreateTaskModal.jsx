@@ -23,7 +23,7 @@ export default function CreateTaskModal({ isOpen, onClose, onTaskCreated }) {
         try {
             setLoading(true);
             const response = await axios.post(
-                `${import.meta.env.VITE_API_BASE_URL}/api/tasks`,
+                "/api/tasks",
                 {
                     ...formData,
                     dueDate: `${formData.dueDate}T00:00:00`

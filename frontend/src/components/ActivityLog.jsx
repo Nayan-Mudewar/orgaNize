@@ -36,9 +36,8 @@ export default function ActivityLog() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/activity-log/me`,
+        `/activity-log/me`,
         {
-           
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         }
       );

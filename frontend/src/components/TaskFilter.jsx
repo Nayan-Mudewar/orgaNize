@@ -41,7 +41,7 @@ export default function TaskFilter({ name = "", onFiltered }) {
       if (name) params.name = name;
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL || ""}/api/tasks/filter`,
+        `/api/tasks/filter`,
         {
           params,
           headers: token ? { Authorization: `Bearer ${token}` } : {},

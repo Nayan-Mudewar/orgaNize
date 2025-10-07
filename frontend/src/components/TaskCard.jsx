@@ -28,7 +28,7 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated, onAddComm
     if (!window.confirm("Are you sure you want to delete this task?")) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/tasks/${task.id}`, {
+      await axios.delete(`/api/tasks/${task.id}`, {
         headers: getAuthHeader(token)
       });
       onTaskDeleted(task.id);
@@ -48,7 +48,7 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated, onAddComm
       };
 
       const response = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/tasks/${task.id}`,
+        `/api/tasks/${task.id}`,
         formattedData,
         { headers: getAuthHeader(token) }
       );
@@ -70,7 +70,7 @@ export default function TaskCard({ task, onTaskDeleted, onTaskUpdated, onAddComm
     }
     setCommentsLoading(true);
     try {
-      const url = `${import.meta.env.VITE_API_BASE_URL}/api/comments/${task.id}`;
+      const url = `/api/comments/${task.id}`;
       const headers = token ? getAuthHeader(token) : {};
       const res = await axios.get(url, { headers });
       setComments(res.data || []);

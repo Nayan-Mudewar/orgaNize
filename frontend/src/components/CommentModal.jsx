@@ -19,7 +19,7 @@ export default function CommentModal({ taskId, onClose, onCreated }) {
     try {
       const payload = { userId, taskId, text: text.trim() };
       const authHeader = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/comments`, payload, {
+      const res = await axios.post(`/api/comments`, payload, {
         headers: { Authorization: authHeader }
       });
       onCreated(res.data);

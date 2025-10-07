@@ -25,7 +25,7 @@ export default function useProfile(visible) {
     const fetchProfile = async () => {
       try {
         setLoading(true); setError(null);
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/${user.id}`, {
+        const res = await axios.get(`/api/users/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.data) throw new Error('No data received');
@@ -45,7 +45,7 @@ export default function useProfile(visible) {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/update/${user.id}`,
+        `/api/users/update/${user.id}`,
         editForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );

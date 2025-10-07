@@ -41,7 +41,7 @@ export default function Dashboard() {
     const fetchTasks = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/tasks`,
+          `/api/tasks`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
